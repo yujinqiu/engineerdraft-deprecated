@@ -6,6 +6,7 @@ svn revert
 `
 
 如果你的working copy 很久没有修改, 然后有人修改server 端, 并且ci 进去, 导致server 端的revision >  working copy , 此时采用,直接更新revision.
+
 `
 svn update
 `
