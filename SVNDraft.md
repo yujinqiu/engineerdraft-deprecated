@@ -1,4 +1,4 @@
-##经常搞混问题
+##SVN容易搞混问题
 - svn update 和 svn revert
 如果working copy 的版本和server 版本一样, 然后修改working copy 的内容后来发现需要废弃当前修改,此时应该使用
 `
