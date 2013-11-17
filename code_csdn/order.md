@@ -3,3 +3,4 @@
 ##[SVNDraft.md](SVNDraft.md)
 ##[EspeakDraft.md](EspeakDraft.md)
 ##[VimDraft.md](VimDraft.md)
+##[GitDraft.md](GitDraft.md)
