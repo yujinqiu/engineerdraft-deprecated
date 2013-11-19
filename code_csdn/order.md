@@ -4,3 +4,4 @@
 ##[EspeakDraft.md](EspeakDraft.md)
 ##[VimDraft.md](VimDraft.md)
 ##[GitDraft.md](GitDraft.md)
+##[CliDraft.md](CliDraft.md)
