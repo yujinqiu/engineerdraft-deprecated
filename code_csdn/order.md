@@ -6,3 +6,4 @@
 ##[GitDraft.md](GitDraft.md)
 ##[CliDraft.md](CliDraft.md)
 ##[LinuxDraft.md](LinuxDraft.md)
+##[MacDraft.md](MacDraft.md)
