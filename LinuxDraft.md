@@ -24,4 +24,20 @@
     3:  41015296- 80078847 ( 39063552 sectors,  20000 MB)  
     4:  80078848-119140351 ( 39061504 sectors,  19999 MB)  
     5: 119140352-138672127 ( 19531776 sectors,  10000 MB)  
-    6: 138672128--207087617 (-345759744 sectors, 2021994 MB)  
+    6: 138672128--207087617 (-345759744 sectors, 2021994 MB)
+    
+## linux 密码失效
+同事反馈,有一台机器"You are required to change your password immediately (password aged)＂, 知道密码会有时效性,google 一下学习了RHEL 密码设置.    
+涉及文件: `/etc/login.defs`
+
+	# Password aging controls:
+    #
+    #       PASS_MAX_DAYS   Maximum number of days a password may be used.
+    #       PASS_MIN_DAYS   Minimum number of days allowed between password changes.
+    #       PASS_MIN_LEN    Minimum acceptable password length.
+    #       PASS_WARN_AGE   Number of days warning given before a password expires.
+    #
+    PASS_MAX_DAYS   99999
+    PASS_MIN_DAYS   0
+    PASS_MIN_LEN    5
+    PASS_WARN_AGE   7
