@@ -28,7 +28,8 @@
     
 ## linux 密码失效
 同事反馈,有一台机器"You are required to change your password immediately (password aged)＂, 知道密码会有时效性,google 一下学习了RHEL 密码设置.    
-涉及文件: `/etc/login.defs`
+涉及文件:   
+1. `/etc/login.defs` 定义用户密码的相关范围常量. 
 
 	# Password aging controls:
     #
@@ -40,4 +41,10 @@
     PASS_MAX_DAYS   99999
     PASS_MIN_DAYS   0
     PASS_MIN_LEN    5
-    PASS_WARN_AGE   7
+    PASS_WARN_AGE   7  
+2. `/etc/shadow` 定义用户当前的设置, 其中关于密码是时效性在第**5**列,如下所示: 
+    foo:$1$yGUcqOSx$5rff5VcK3auiMS8M3WpcX/:15988:7:99999:7:::
+    
+涉及命令: `chage` 其中 -l ${user}可以查看当前用户设置.  -M 可以调整最大失效时间,如果需要永久不失效 -M 99999
+
+  
