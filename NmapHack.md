@@ -21,6 +21,15 @@ nmap 做了什么事情?
 
 	-sP 表示ping scanning, nmap 发送ICMP echo request 到每个机器, 返回echo response的机器是存活状态. 但是有些站点会屏蔽echo request , 因此nmap 会发送一个TCP ack packet 到端口80 (by default), 如果获取到RST, 那么也可以确定是
     
+批量扫描   
+
+	nmap ip1 ip2 ip3
+    nmap 192.168.1.*
+    nmap 192.168.1.101,102,103
+    nmap 191.168.1.101-201
+    nmap 129.168.1.101-201 --exclude=192.168.1.150  
+    
+    
 ### 端口扫描
 确定在子网内的机器ip之后就可以针对某些特定的机器进行端口扫描.
 1: 使用TCP连接进行扫描  
@@ -43,3 +52,22 @@ nmap 做了什么事情?
 	本机发送SYN, 如果端口listen那么就返回 ACK|SYN,本机收到之后返回RST来断开连接.  如果返回RST那么表示该端口没有listen. 
 优点: half-open scanning 相对来说比较难被发现在扫描
 缺点:执行该操作需要root 权限, 因为需要构建SYN包.
+
+### 操作系统识别(OS Fingerprinting)
+hacker可能对某个os的漏洞很熟悉, 能够轻易进入该操作系统的机器.  
+
+	nmap -O ip
+    
+### indent 扫描
+hacker 会选择一台对某些进程存在漏洞的电脑, 比如一个root运行的webserver, 如果目标机器运行了identd(前提哦,identd是一个协议的实现) 通过 `-l`选项能够进行查看哪个用户拥有http守护进程.   
+
+	nmap -sT -p 80 -l -O www.yourserver.com
+    
+ Apache运行在root下，是不安全的实践，你可以通过把/etc/indeed.conf中的**auth服务注销**来阻止ident请求，并重新启动ident。另外也可用使用ipchains或你的最常用的防火墙，在网络边界上执行防火墙规则来终止ident请求，这可以阻止来路不明的人探测你的网站用户拥有哪些进程。  
+ 
+### 常用选项  
+
+	-p 指定端口 -p 21,22,23
+ 
+### 小结：　　
+使用什么样的方法来抵制一个黑客使用Nmap，这样的工具是有的，比如 Scanlogd, Courtney, and Shadow;，然而使用这样的工具并不能代替网络安全管理员。因为扫描只是攻击的前期准备，站点使用它只可以进行严密的监视。 使用Nmap监视自己的站点，系统和网络管理员能发现潜在入侵者对你的系统的探测。
