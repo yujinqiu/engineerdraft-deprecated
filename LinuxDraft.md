@@ -47,4 +47,30 @@
     
 涉及命令: `chage` 其中 -l ${user}可以查看当前用户设置.  -M 可以调整最大失效时间,如果需要永久不失效 -M 99999
 
+
+## curl 设置代理
+
+### 问题背景
+
+在GFW的"庇护"下, 有时候为了访问墙外的资源, 需要利用`brew install ` 来安装对应的软件, 其中`brew install ` 第一步是下载对应的软件, 有时候由于被GFW 墙需要通过`goagent`等代理来访问. 常见的curl 代理模式如下: 
+
+     -x, --proxy <[protocol://][user:password@]proxyhost[:port]>
+              Use the specified HTTP proxy. If the port number is not specified, it is assumed at port 1080.
+
+              This  option  overrides  existing  environment  variables that set the proxy to use. If there's an environment variable setting a proxy, you can set
+              proxy to "" to override it.
+
+              All operations that are performed over an HTTP proxy will transparently be converted to HTTP. It means that  certain  protocol  specific  operations
+              might not be available. This is not the case if you can tunnel through the proxy, as one with the -p, --proxytunnel option.
+
+              User  and  password  that  might be provided in the proxy string are URL decoded by curl. This allows you to pass in special characters such as @ by
+              using %40 or pass in a colon with %3a.
+
+              The proxy host can be specified the exact same way as the proxy environment variables, including the protocol prefix (http://) and the embedded user
+              + password.
+
   
+这种模式无法满足`brew install` 的方式, 因为我们不可能修改`brew install`的行为, 因此需要采用类似环境变量的形式.  
+
+    export http_proxy=http://your.proxy.server:port/
+    如果是 HTTPS 需要配置 HTTPS_PROXY, 注意是大写哦. 
