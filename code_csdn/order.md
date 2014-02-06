@@ -7,3 +7,6 @@
 ##[CliDraft.md](CliDraft.md)
 ##[LinuxDraft.md](LinuxDraft.md)
 ##[MacDraft.md](MacDraft.md)
+##[FPDraft.md](FPDraft.md)
+##[TranslateDraft.md](TranslateDraft.md)
+##[NmapHack.md](NmapHack.md)
