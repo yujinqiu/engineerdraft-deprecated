@@ -69,13 +69,14 @@
               The proxy host can be specified the exact same way as the proxy environment variables, including the protocol prefix (http://) and the embedded user
               + password.
 
-<<<<<<< HEAD
+
   
 这种模式无法满足`brew install` 的方式, 因为我们不可能修改`brew install`的行为, 因此需要采用类似环境变量的形式.  
 
     export http_proxy=http://your.proxy.server:port/
     如果是 HTTPS 需要配置 HTTPS_PROXY, 注意是大写哦. 
-=======
+    
+
 ## 如何删除乱码文件/目录  
 
 背景: 使用linux 命令行中断经常会不小心创建一个乱码文件或者目录, 使用`rm -rf ${乱码名`,会找不到.   
@@ -84,4 +85,4 @@
 
 	ls -i * # get file inode num
     find . -inum ${inode} -exec rm -rf -- {} \; # 注意其中 -- 来避免shell 转义. 
->>>>>>> 6d0931decef04b7f9592d84a911e75d1204ad23f
+
