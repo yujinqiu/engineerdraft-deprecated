@@ -10,3 +10,4 @@
 ##[FPDraft.md](FPDraft.md)
 ##[TranslateDraft.md](TranslateDraft.md)
 ##[NmapHack.md](NmapHack.md)
+##[NginxDraft.md](NginxDraft.md)
