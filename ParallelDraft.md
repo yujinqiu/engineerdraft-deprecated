@@ -1,4 +1,4 @@
-Parallel(并行你的工作)
+#Parallel(并行你的工作)
 --------------------
 今天看到看到一篇介绍Parallel 的文章[Use multiple CPU Cores with your Linux commands — awk, sed, bzip2, grep, wc, etc.](http://www.rankfocus.com/use-cpu-cores-linux-commands/), 感觉和实际工作的没有太大的帮助, 因为平时其实很少去压缩和解压缩超大的文件. 因此下面主要结合个人的工作经验,总结几条Parallel的工作.
 下面看一下Parallel的图片,感觉有点眼花,很有心理学的图片效果, 相信我Parallel 是一个值得你学习的命令, 所谓事半功倍说的就是它. 
