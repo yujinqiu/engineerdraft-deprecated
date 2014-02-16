@@ -13,6 +13,6 @@
             }
 	    }
     
- ** 这个错误的比例升高可能表明服务器upstream处理过慢，导致用户提前关闭连接。而正常情况下有一个小比例是正常的。 **
+ **这个错误的比例升高可能表明服务器upstream处理过慢，导致用户提前关闭连接。而正常情况下有一个小比例是正常的。**
  
  refer: [http://www.cnblogs.com/xiaohuo/archive/2012/08/09/2630305.html](http://www.cnblogs.com/xiaohuo/archive/2012/08/09/2630305.html)
