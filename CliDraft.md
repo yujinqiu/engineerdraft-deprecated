@@ -110,3 +110,4 @@ mod 很类似 tmux 能够attach(输入命令`mocp`) 和 detach(`q`)
     autojump ZSH 需要**compinit**模块来支持, 配置方法:把下面内容加入 ~/.zshrc  
     
             autoload -U compinit && compinit
+I
