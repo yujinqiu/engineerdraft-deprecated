@@ -1,0 +1,9 @@
+    <hr />
+    <ul class="pager">
+        {{if .Prev}}
+            <li class="previous"><a href="{{.Prev.Permalink}}">&laquo; {{.Prev.Title}}</a>
+        {{end}}
+        {{if .Next}}
+            <li class="next"><a href="{{.Next.Permalink}}">{{.Next.Title}} &raquo;</a>
+        {{end}}
+    </ul>

@@ -1,0 +1,8 @@
+<article class="post" style="margin-bottom: 40px;">
+  <h2><a href='{{ .Permalink }}'> {{ .Title }}</a> </h2>
+  <section id="main">
+    <div class="meta">{{ .Date.Format "Jan 2, 2006" }}</div>
+        {{ template "chrome/categories.html" . }}
+    {{ .Content }}
+  </section>
+</article>
