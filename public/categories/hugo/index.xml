@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Hugo on Blog about programming, cats and related things </title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>http://localhost:1313/categories/hugo/index.xml/</link>
+    
+    
+    
+    <updated>Sun, 04 May 2014 00:00:00 UTC</updated>
+    
+    <item>
+      <title>Deploying blog with docker and hugo</title>
+      <link>http://localhost:1313/posts/hugoblog/</link>
+      <pubDate>Sun, 04 May 2014 00:00:00 UTC</pubDate>
+      
+      <guid>http://localhost:1313/posts/hugoblog/</guid>
+      <description>
+
+&lt;h4 id=&#34;toc_0&#34;&gt;Prelude&lt;/h4&gt;
+
+&lt;p&gt;Recently I moved my jabber-server to DigitalOcean VPS. Run Prosody in docker was
+so easy, that I decided create this blog. And of course deploy it with docker!&lt;/p&gt;
+
+&lt;h4 id=&#34;toc_1&#34;&gt;Content&lt;/h4&gt;
+
+&lt;p&gt;At first we need container with templates and content for blog generation.
+I used next dockerfile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM debian:jessie
+
+RUN apt-get update &amp;amp;&amp;amp; apt-get install --no-install-recommends -y ca-certificates git-core
+RUN git clone http://github.com/LK4D4/lk4d4.darth.io.git /src
+VOLUME [&amp;quot;/src&amp;quot;]
+WORKDIR /src
+ENTRYPOINT [&amp;quot;git&amp;quot;]
+CMD [&amp;quot;pull&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There is no magic here: just clone repo to &lt;code&gt;/src&lt;/code&gt; (it will be used below),
+and update it on container start.&lt;/p&gt;
+
+&lt;p&gt;Build image:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build -t blog/content .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Create data container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker run --name blog_content blog/content
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For updating content and templates from github we need just:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker start blog_content
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;toc_2&#34;&gt;Hugo&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://hugo.spf13.com&#34;&gt;Hugo&lt;/a&gt; &amp;ndash; very fast static site generator, written in Go (so
+many cool things written in Go btw).&lt;/p&gt;
+
+&lt;p&gt;Idea is to run hugo in docker container so it reads contents from one directory
+and writes generated blog to another.&lt;/p&gt;
+
+&lt;p&gt;Hugo dockerfile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM crosbymichael/golang
+
+RUN apt-get update &amp;amp;&amp;amp; apt-get install --no-install-recommends -y bzr
+
+RUN go get github.com/spf13/hugo
+
+VOLUME [&amp;quot;/var/www/blog&amp;quot;]
+
+ENTRYPOINT [&amp;quot;hugo&amp;quot;]
+CMD [&amp;quot;-w&amp;quot;, &amp;quot;-s&amp;quot;, &amp;quot;/src&amp;quot;, &amp;quot;-d&amp;quot;, &amp;quot;/var/www/blog&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So, here we &lt;code&gt;go get&lt;/code&gt; hugo and use /src(remember this from content container?)
+as source directory for it and &lt;code&gt;/var/www/blog&lt;/code&gt; as destination.&lt;/p&gt;
+
+&lt;p&gt;Now build image and run container with hugo:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build -t blog/rendered .
+docker run --name blog --volumes-from blog_content blog/rendered
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here the trick with
+&lt;a href=&#34;http://docs.docker.io/use/working_with_volumes/&#34;&gt;&lt;code&gt;--volumes-from&lt;/code&gt;&lt;/a&gt; &amp;ndash; we used
+&lt;code&gt;/src&lt;/code&gt; from &lt;code&gt;blog_content&lt;/code&gt; container, and yeah, we&amp;rsquo;re going to use
+&lt;code&gt;/var/www/blog&lt;/code&gt; from &lt;code&gt;blog&lt;/code&gt; container.&lt;/p&gt;
+
+&lt;h4 id=&#34;toc_3&#34;&gt;Nginx&lt;/h4&gt;
+
+&lt;p&gt;So, now we have container with templates and content &lt;code&gt;blog_content&lt;/code&gt;, content
+with ready to use blog &lt;code&gt;blog&lt;/code&gt;, it&amp;rsquo;s time to show this blog to the world.&lt;/p&gt;
+
+&lt;p&gt;I write simple config for nginx:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    listen 80;
+    server_name lk4d4.darth.io;
+    location / {
+        root /var/www/blog;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Put it to sites-enabled directory, which used in this pretty dockerfile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM dockerfile/nginx
+
+ADD sites-enabled/ /etc/nginx/sites-enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Build image and run container with nginx:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build -t nginx .
+docker run -p 80:80 -d --name=nginx --volumes-from=blog nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s it, now blog is running on &lt;a href=&#34;http://lk4d4.darth.io&#34;&gt;lk4d4.darth.io&lt;/a&gt; and
+you can read it :) I can update it just with &lt;code&gt;docker start blog_content&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;toc_4&#34;&gt;Conclusions&lt;/h4&gt;
+
+&lt;p&gt;It&amp;rsquo;s really fun to use docker. You don&amp;rsquo;t need to install and remove
+tons of crap on host machine, docker can handle it all for you.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.docker.io/static/img/homepage-docker-logo.png&#34; alt=&#34;docker&#34; /&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

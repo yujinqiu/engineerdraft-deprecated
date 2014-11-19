@@ -1,0 +1,206 @@
+  <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <base href="http://localhost:1313">
+    <title> Coverage for multiple packages in go </title>
+    <link rel="canonical" href="http://localhost:1313/posts/multicover/">
+    <link href="" rel="alternate" type="application/rss+xml" title="Blog about programming, cats and related things" />
+    
+    <link id="elemento-theme" href="/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: "Helvetica Neue";
+            font-size: 16px;
+            text-rendering: optimizeLegibility;
+        }
+        body h4 {
+            margin-top: 30px;
+        }
+        .highlight pre {
+            background-color: transparent;
+        }
+        a {
+            text-decoration:none;
+            color:#666;
+        }
+        .nav-text {
+            padding-top:9px;
+        }
+        .container-narrow {
+            margin: 0 auto;
+            max-width: 700px;
+        }
+        .container-narrow > hr {
+            margin: 30px 0;
+        }
+    </style>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-50741338-1', 'darth.io');
+        ga('send', 'pageview');
+    </script>
+
+</head>
+<body>
+    <div class="container-narrow">
+        <div class="masthead">
+            <ul class="nav nav-pills pull-right">
+                <li><a href="https://github.com/LK4D4">github</a></li>
+                <li><a href="https://twitter.com/LK4D4math">twitter</a></li>
+                <li><a href="http://osrc.dfm.io/LK4D4/">osrc</a></li>
+                <li><a href="" type="application/rss+xml">rss</a></li>
+            </ul>
+            <h3 class="muted">
+                <a href="http://localhost:1313">LK4D4 Blog</a>
+            </h3>
+         </div>
+         <hr>
+
+
+      <h1>Coverage for multiple packages in go</h1>
+        <section id="main">
+          <h5 id="date"> May 6, 2014 </h5>
+          
+
+<h4 id="toc_0">Prelude</h4>
+
+<p>There is awesome coverage in go. You can read about
+it <a href="http://blog.golang.org/cover">here</a>. But also it has some limitations.
+For example let&rsquo;s assume that we have next code structure:</p>
+
+<pre><code>src
+├── pkg1
+│   ├── pkg11
+│   └── pkg12
+└── pkg2
+    ├── pkg21
+    └── pkg22
+</code></pre>
+
+<p><code>pkg2</code>, <code>pkg21</code>, <code>pkg22</code> uses <code>pkg1</code>, <code>pkg11</code> and <code>pkg12</code> in different cases.
+So question is &ndash; how we can compute <strong>overall</strong> coverage for our code base?</p>
+
+<h4 id="toc_1">Generating cover profiles</h4>
+
+<p>Let&rsquo;s consider some possible go test commands with <code>-coveprofile</code>:</p>
+
+<pre><code>go test -coverprofile=cover.out pkg2
+</code></pre>
+
+<p>tests run only for <code>pkg1</code> and cover profile generated only for pkg2</p>
+
+<pre><code>go test -coverprofile=cover.out -coverpkg=./... pkg2
+</code></pre>
+
+<p>tests run only for <code>pkg2</code> and cover profile generated for all packages</p>
+
+<pre><code>go test -coverprofile=cover.out -coverpkg=./... ./...
+</code></pre>
+
+<p>boo hoo: <code>cannot use test profile flag with multiple packages</code></p>
+
+<p>So, what we can do for running tests on all packages and get cover profile
+for all packages?</p>
+
+<h4 id="toc_2">Merging cover profiles</h4>
+
+<p>Now we able to get overall profile for each package individually.
+It seems that we can merge this files. Profile file has next structure,
+according to
+<a href="https://code.google.com/p/go/source/browse/cover/profile.go?repo=tools">cover code</a>:</p>
+
+<pre><code>// First line is &quot;mode: foo&quot;, where foo is &quot;set&quot;, &quot;count&quot;, or &quot;atomic&quot;.
+// Rest of file is in the format
+//      encoding/base64/base64.go:34.44,37.40 3 1
+// where the fields are: name.go:line.column,line.column numberOfStatements count
+</code></pre>
+
+<p>So, using magic of <code>awk</code> I found next solution to this problem:</p>
+
+<pre><code>go test -coverprofile=pkg1.cover.out -coverpkg=./... pkg1
+go test -coverprofile=pkg11.cover.out -coverpkg=./... pkg1/pkg11
+go test -coverprofile=pkg12.cover.out -coverpkg=./... pkg1/pkg12
+go test -coverprofile=pkg2.cover.out -coverpkg=./... pkg2
+go test -coverprofile=pkg21.cover.out -coverpkg=./... pkg2/pkg21
+go test -coverprofile=pkg22.cover.out -coverpkg=./... pkg2/pkg22
+echo &quot;mode: set&quot; &gt; coverage.out &amp;&amp; cat *.cover.out | grep -v mode: | sort -r | \
+awk '{if($1 != last) {print $0;last=$1}}' &gt;&gt; coverage.out
+</code></pre>
+
+<p>The true meaning of last line I leave as an exercise for user :)
+Now we have profile for all code, that was executed by all tests. We can use
+this merged profile <code>coverage.out</code> for go cover tool:</p>
+
+<pre><code>go tool cover -html=coverage.out
+</code></pre>
+
+<p>or for generating <a href="https://github.com/t-yuki/gocover-cobertura">cobertura report</a>:</p>
+
+<pre><code>gocover-cobertura &lt; coverage.txt &gt; coverage.xml
+</code></pre>
+
+<h4 id="toc_3">Conclusion</h4>
+
+<p>Of course this solution is only workaround. And it works only for <code>mode: set</code>.
+Similar logic must be embedded to cover tool. I am really hope that one day we
+will be able to run</p>
+
+<pre><code>go test -coverprofile=cover.out -coverpkg=./... ./...
+</code></pre>
+
+<p>and leaning back in chair, enjoying perfect cover profiles.</p>
+
+        </section>
+
+  
+<div class="container">
+  <ul class="nav nav-pills">
+    <li class="nav-text">Categories: </li>
+    
+      <li><a href="/categories/go">go</a> </li>
+    
+  </ul>
+</div>
+
+
+      <hr />
+    <ul class="pager">
+        
+            <li class="previous"><a href="http://localhost:1313/posts/defer/">&laquo; Defer overhead in go</a>
+        
+        
+            <li class="next"><a href="http://localhost:1313/posts/hugoblog/">Deploying blog with docker and hugo &raquo;</a>
+        
+    </ul>
+
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'lk4d4';
+
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  
+    <hr>
+    <div class="footer">
+        <p>Powered by <a href="http://docker.io">Docker</a> and <a href="http://hugo.spf13.com/">Hugo</a></p>
+    </div>
+</div>
+<script>document.write('<script src="http://'
+        + (location.host || 'localhost').split(':')[0]
+		+ ':1313/livereload.js?mindelay=10"></'
+        + 'script>')</script></body>
+</html>
+
