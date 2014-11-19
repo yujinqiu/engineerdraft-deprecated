@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Docker on Blog about programming, cats and related things </title>
+      <title>Docker on Engineer&#39;s Draft </title>
       <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>http://localhost:1313/categories/docker/index.xml/</link>
     
