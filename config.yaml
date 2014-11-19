@@ -1,0 +1,9 @@
+---
+contentdir: "content"
+layoutdir: "layouts"
+publishdir: "public"
+indexes:
+  category: "categories"
+baseurl: "http://lk4d4.darth.io/"
+title: "Blog about programming, cats and related things"
+...

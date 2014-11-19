@@ -1,0 +1,16 @@
+    {{ template "chrome/header.html" . }}
+
+    <div class="row-fluid">
+        <section id="main">
+          <div>
+            <h5><a href="/categories">Full Category Index</a></h5>
+            <h2>Posts in &ldquo;{{ .Title }}&rdquo;</h2>
+            {{ range .Data.Pages }}
+            {{ .Render "summary"}}
+            {{ end }}
+          </div>
+        </section>
+
+    </div>
+
+  {{ template "chrome/footer.html" }}

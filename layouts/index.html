@@ -1,0 +1,12 @@
+    {{ template "chrome/header.html" .}}
+
+    <div class="row-fluid">
+        <section id="content" class="body">
+            <ul id="list">
+                {{ range .Data.Pages }}
+                    {{ .Render "summary"}}
+                {{ end }}
+            </ul>
+        </section>
+    </div>
+    {{ template "chrome/footer.html" }}

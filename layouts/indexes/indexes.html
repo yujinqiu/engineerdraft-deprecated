@@ -1,0 +1,19 @@
+{{ template "chrome/header.html" . }}
+
+    <div class="container content">
+        <section id="main">
+          <div>
+            <h1>Archive of Posts, by {{ .Data.Singular }}</h1>
+            <ul class="nav nav-pills">
+              {{ $data := .Data }}
+              {{ range $key,$value := .Data.Index.ByCount }}
+              <li><a href="/{{ $data.Plural }}/{{ $value.Name | urlize }}"> {{ $value.Name }}
+                  <span class="badge">{{ $value.Count }}</span></a>
+              </li>
+              {{ end }}
+            </ul>
+          </div>
+        </section>
+    </div>
+
+  {{ template "chrome/footer.html" }}

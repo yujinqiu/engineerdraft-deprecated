@@ -1,0 +1,9 @@
+
+<div class="container">
+  <ul class="nav nav-pills">
+    <li class="nav-text">Categories: </li>
+    {{ range .Params.categories }}
+      <li><a href="/categories/{{ . | urlize }}">{{ . }}</a> </li>
+    {{ end }}
+  </ul>
+</div>
