@@ -22,6 +22,8 @@ Let's create simple queue with methods `Put` and `Get`. Next snippets shows such
 queue and benchmarks for it. Also I wrote duplicate methods with `defer` and
 without it.
 
+<!--more-->
+
 #### Code
 
 {{% highlight go %}}

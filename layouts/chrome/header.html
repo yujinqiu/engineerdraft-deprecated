@@ -1,3 +1,10 @@
+<!--
+  This is the actual header for each page of the site except the homepage.
+
+  It simply shows the title of the page and includes the css/fonts found in
+  /layouts/chrome/header.html
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,20 +12,5 @@
     <base href="{{ .Site.BaseUrl }}">
     <title> {{ .Title }} </title>
     <link rel="canonical" href="{{ .Permalink }}">
-    <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
     {{ template "chrome/head_includes.html" . }}
 </head>
-<body>
-    <div class="container-narrow">
-        <div class="masthead">
-            <ul class="nav nav-pills pull-right">
-                <li><a href="https://github.com/LK4D4">github</a></li>
-                <li><a href="https://twitter.com/LK4D4math">twitter</a></li>
-                <li><a href="http://osrc.dfm.io/LK4D4/">osrc</a></li>
-                <li><a href="{{ .RSSlink }}" type="application/rss+xml">rss</a></li>
-            </ul>
-            <h3 class="muted">
-                <a href="{{ .Site.BaseUrl }}">LK4D4 Blog</a>
-            </h3>
-         </div>
-         <hr>

@@ -1,38 +1,12 @@
+<!--
+  This file simply includes all the css and fonts that should go into the
+  header of each page.
 
-    <link id="elemento-theme" href="/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            font-family: "Helvetica Neue";
-            font-size: 16px;
-            text-rendering: optimizeLegibility;
-        }
-        body h4 {
-            margin-top: 30px;
-        }
-        .highlight pre {
-            background-color: transparent;
-        }
-        a {
-            text-decoration:none;
-            color:#666;
-        }
-        .nav-text {
-            padding-top:9px;
-        }
-        .container-narrow {
-            margin: 0 auto;
-            max-width: 700px;
-        }
-        .container-narrow > hr {
-            margin: 30px 0;
-        }
-    </style>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  It is separate from the rest of the header because the actual header for the
+  homepage of the site is different, but we want every page of the site
+  (including the homepage) to have the same assets.
+-->
 
-        ga('create', 'UA-50741338-1', 'darth.io');
-        ga('send', 'pageview');
-    </script>
+<link rel="stylesheet" href="/css/poole.css">
+<!-- <link rel="stylesheet" href="/css/syntax.css"> -->
+<link rel="stylesheet" href="/css/lanyon.css">

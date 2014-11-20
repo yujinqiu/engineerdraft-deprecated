@@ -1,2 +1,5 @@
-run:
-	hugo server -w
+preview:
+	hugo server -v   -D
+
+publish:
+	hugo -v -D

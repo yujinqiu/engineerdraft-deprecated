@@ -124,5 +124,3 @@ you can read it :) I can update it just with `docker start blog_content`.
 
 It's really fun to use docker. You don't need to install and remove
 tons of crap on host machine, docker can handle it all for you.
-
-![docker](https://www.docker.io/static/img/homepage-docker-logo.png)
