@@ -130,7 +130,7 @@ dd {
 /* Misc */
 hr {
   position: relative;
-  margin: 1.5rem 0;
+  /*margin: 1.5rem 0;*/
   border: 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #D3CACA;
@@ -189,7 +189,9 @@ blockquote {
   padding: .5rem 1rem;
   margin: .8rem 0;
   color: #7a7a7a;
-  border-left: .25rem solid #e5e5e5;
+  border-left: 0.5rem solid #A39D9D;
+  border-radius: 4px;
+  background-color: #DBD3C4;
 }
 blockquote p:last-child {
   margin-bottom: 0;
@@ -204,7 +206,8 @@ blockquote p:last-child {
 img {
   display: block;
   margin: 0 0 1rem;
-  border-radius: 5px;
+  border: 0.3em solid #e0dfcc;
+  border-radius: 0.7em;
   height: auto;
   width:100%;
 }
@@ -324,7 +327,7 @@ ul.catlist li:last-child:after { content: ""; }
 
 .container {
   max-width: 38rem;
-  padding-left:  1rem;
+  padding-left:  0rem;
   padding-right: 1rem;
   margin-left:  auto;
   margin-right: auto;

@@ -75,6 +75,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .container {
   max-width: 28rem;
+  margin-bottom:10px;
 }
 @media (min-width: 38rem) {
   .container {
@@ -97,7 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 .masthead {
   padding-top:    1rem;
   padding-bottom: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
   border-bottom: 1px solid #eee;
 }
 .masthead-title {
@@ -149,6 +150,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 14rem;
   visibility: hidden;
   overflow-y: auto;
+  text-align: center;
   font-family: "PT Sans", Helvetica, Arial, sans-serif;
   font-size: .875rem; /* 15px */
   color: rgba(255,255,255,.6);
@@ -167,8 +169,22 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   color: #fff;
 }
+
+.sidebar p {
+    margin-bottom:0;
+}
+
+.sidebar img {
+    width: 80px;
+    display: inline-block;
+    margin-bottom:0;
+    border-radius:50%;
+    margin:5px 0;
+}
 .sidebar-item {
   padding: 1rem;
+  position:absolute;
+  bottom: 10px;
 }
 .sidebar-item p:last-child {
   margin-bottom: 0;
@@ -210,8 +226,8 @@ a.sidebar-nav-item:focus {
 /* Style the `label` that we use to target the `.sidebar-checkbox` */
 .sidebar-toggle {
   position: absolute;
-  top:  1rem;
-  left: 1rem;
+  top:  0.5rem;
+  left: 0.5rem;
   display: block;
   width: 2.2rem;
   padding: .5rem .65rem;

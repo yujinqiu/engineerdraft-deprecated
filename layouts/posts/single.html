@@ -14,6 +14,7 @@
         <h3 class="masthead-title">
           <a href="/posts" title="Blog">Blog Posts</a>
         </h3>
+        <hr>
       </div>
     </div>
 
@@ -29,9 +30,11 @@
       Finally we include the actual content of the post.
     -->
     <div class="container content">
-      <h1 class="post-title">{{ .Title }}</h1>
+      <div class="post-tile-meta">
+        <h1 class="post-title">{{ .Title }}</h1>
+        <p> {{ .Date.Format "Mon Jan 2, 2006" }} {{ template "chrome/categories.html" . }}</p>
+      </div>
         <section id="main">
-          <h5 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} {{ template "chrome/categories.html" . }} </h5>
           {{ .Content }}
         </section>
   

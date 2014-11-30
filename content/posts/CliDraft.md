@@ -6,7 +6,7 @@ description = "命令行相关 trick & skill"
 +++
 
 ## 命令行控
--------------------------
+
 ### ubuntu (命令行)
 
 #### moc(music on console)
@@ -118,3 +118,18 @@ mod 很类似 tmux 能够attach(输入命令`mocp`) 和 detach(`q`)
     autojump ZSH 需要**compinit**模块来支持, 配置方法:把下面内容加入 ~/.zshrc  
     
             autoload -U compinit && compinit
+
+### PIPE 命令查看出错状态
+经常我们会执行一串命令, 管道连接, 可能有某个命令出错, 需要知道哪个环节出错.   
+
+	cat remote.py  | grep close | awk '{print $1}'
+	
+	echo ${PIPESTATS[*]}
+	0 0 0
+
+### telnet 正常退出姿势
+说实话, 不太喜欢 `telnet`, 个人还是比较希望强大的 `nc` , 发现自己居然不会退出. 万能的 google  
+
+	ctrl + ]
+	quit
+	
