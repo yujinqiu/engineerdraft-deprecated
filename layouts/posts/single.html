@@ -32,18 +32,18 @@
     <div class="container content">
       <div class="post-tile-meta">
         <h1 class="post-title">{{ .Title }}</h1>
-        <p> {{ .Date.Format "Mon Jan 2, 2006" }} {{ template "chrome/categories.html" . }}</p>
+        {{ .Date.Format "Mon Jan 2, 2006" }} {{ template "chrome/categories.html" . }}</p>
       </div>
         <section id="main">
           {{ .Content }}
         </section>
   
+      {{ template "chrome/prev_next.html" . }}
     </div>
   </div>
 
   <label for="sidebar-checkbox" class="sidebar-toggle"></label>
 
-  {{ template "chrome/prev_next.html" . }}
   <br />
 
 
