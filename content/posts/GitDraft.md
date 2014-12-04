@@ -33,3 +33,49 @@ Use `?` to get the whole list of available options.
 
 	git tag -l
 	git checkout tags/<tag_name> 
+	
+## Git checkout 远程的一个分支
+### 背景
+在多人协作的开发场景下, Dev B 提交了一个分支, 需要拉到本地.   
+	
+	git fetch origin 
+	git branch -v -a 
+	git checkout -b test origin/test
+	
+## Git 多人开发流程
+
+### 如何发 PR
+
+以下以 wiki-pages 为例
+
+* 把项目 fork 到自己名下，然后 clone 到本地
+
+        git clone git@git.xiaojukeji.com:yexiliang/wiki-pages.git
+
+* 将原始项目加为上游
+
+        git remote add upstream git@git.xiaojukeji.com:op/wiki-pages.git
+
+* 在本地项目建立分支并切换到该分支
+
+        git checkout -b dev
+
+* 在 dev 分支上开发，提交
+
+        touch foo.txt
+        git add foo.txt
+        git commit
+
+* 切换到 master 分支并合并上游
+
+        git checkout master
+        git fetch upstream
+        git merge upstream/master
+
+* 切换到 dev 分支，合并 master，推送代码
+
+        git checkout dev
+        git rebase master
+        git push
+
+* 到 github / gitlab 选 dev 分支发 pull request
