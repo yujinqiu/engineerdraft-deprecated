@@ -79,3 +79,16 @@ Use `?` to get the whole list of available options.
         git push
 
 * 到 github / gitlab 选 dev 分支发 pull request
+
+
+## Git conflict 如何保持一方修改
+### 背景
+在多人协作的情况下, 经常会出现冲突, 有时候不想 merge conflict, 直接使用双方的修改内容.     
+####  保持本地修改, 放弃远程版本
+
+    git checkout --ours filename.c
+    
+ 
+#### 使用远程版本, 放弃本地修改    
+
+    git checkout --theirs filename.c

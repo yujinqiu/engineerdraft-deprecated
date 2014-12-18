@@ -133,3 +133,9 @@ mod 很类似 tmux 能够attach(输入命令`mocp`) 和 detach(`q`)
 	ctrl + ]
 	quit
 	
+
+### nc 
+#### 背景
+nc 和 telnet 默认是交互式, 可是我们经常需要非交互, 其实解决方案很简单   
+
+	echo "cmd "  | nc  host  port
