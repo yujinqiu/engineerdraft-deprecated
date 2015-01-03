@@ -13,6 +13,10 @@ ssh 通过加密传输数据, 特别适合**国情, 加入我们要让8080 端�
 
 	ssh  -D 8080 user@host
 	
+### 遇到错误
+	Bad dynamic forwarding specification
+原因: ssh -D user@host 忘记了指定端口
+	
 #### 应用场景  
 在咖啡厅等公共场所, 为了上网安全, 可以使用 ssh动态转发来保证安全.
 

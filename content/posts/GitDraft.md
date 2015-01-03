@@ -92,3 +92,28 @@ Use `?` to get the whole list of available options.
 #### 使用远程版本, 放弃本地修改    
 
     git checkout --theirs filename.c
+    
+## Git 回滚到上一个版本
+作为项目的负责人, 通过 code review 并不能保证其中提交内容ok, 如果出现异常, 需要仅限回滚. 
+
+	branch1    branch2
+	    \        /
+	     \      /
+	      \    /
+	       \  /
+	       new branch (hashcode)
+	      
+假设用户提交的 branch2  有问题, 需要回滚回 branch1
+
+	git  revert  -m 1  hashcode
+	
+如何得到 `-m` 之后对应的 branch  是  1 ? 2 ? 
+
+	/go/src/ServiceTree$ git show af24b57a530adcf24d098676809bc88939336063  
+	commit af24b57a530adcf24d098676809bc88939336063  
+	Merge: 609bb8e d160c3f   #注意这里
+	Date:   Sat Dec 27 11:30:37 2014 +0800   
+
+    Merge branch 'dev' of ssh://git.xiaojukeji.com:22/op/servicetree into dev
+
+从 Merge 中可以选择 `-m` 对应的选项. 
