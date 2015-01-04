@@ -21,3 +21,8 @@ title = "CurlDraft"
 
 		curl -F "blob=@card.txt;type=text/plain" http://localhost:3000/upload
 <!--more-->
+
+5. 指定 curl 方法
+我们在执行的时候, 需要指定 HTTP 对应的方法
+
+        curl -X DELETE  <URL>
