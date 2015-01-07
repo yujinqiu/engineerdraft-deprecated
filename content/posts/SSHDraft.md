@@ -122,6 +122,7 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
              is to use this to run X11 programs on a remote machine.  For example, ssh -n shadows.cs.hut.fi emacs & will start an emacs on shad-
              ows.cs.hut.fi, and the X11 connection will be automatically forwarded over an encrypted channel.  The ssh program will be put in the back-
              ground.  (This does not work if ssh needs to ask for a password or passphrase; see also the -f option.)
+     -o "StrictHostKeyChecking no"  取消机器 fingerprint 检查, 避免输入 yes/no 交互
              
 比较常见选项组合:   
 	
