@@ -22,6 +22,8 @@ title = "fq"
 ssh -D 的本质上是一个 sock5 的代理, 不是 http/https 代理, 所以在 firefox 配置里边**不能**够把 HTTP Proxy 和 SSL Proxy 配置为`127.0.0.1:10086`, 只能设置socks 代理
 2. 为了避免 [DNS 污染](http://en.wikipedia.org/wiki/DNS_spoofing), 建议在 firefox 中设置`Remote DNS`, 进行远端解析
 
+<!--more-->
+
 ### 相关命令代理
 #### curl
 

@@ -14,6 +14,7 @@ session 的过期失效时间由两个方面决定
 1. 存储sessionid 的 cookie (SessionCookieLifetime) 
 2. 存储在服务器端的 session 文件( SessionGCMaxLifetime 默认3600) 
 
+<!--more-->
 开始的时候只是设置了 SessionCookieLifetime, 虽然 cookie 的内容不会被删除, 但是在服务器端的 session 文件会被删除, 在代码中    
 
 	ctx.Inut.Session("username").(string)

@@ -131,3 +131,15 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
 
 #### Reference
 [SSH Tunnel - Local and Remote Port Forwarding Explained With Examples](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
+
+### SSH 指定端口
+背景是为了安全起见, 通常会将 ssh 端口修改为非22端口, 而在使用 git 的时候, 通常是 ssh 端口, 常见的解决方法是修改 .git/conf 下调整为 
+
+    ssh://git@domain.com:22/~/Projects/p1.git
+
+每次都需要修改比较烦人, 比较简洁的方案是: 修改`.ssh/config` 文件, 其中 `foo.com` 是 git server 的域名
+
+    Host foo.com
+        HostName foo.com
+        Port 22
+        GSSAPIAuthentication no

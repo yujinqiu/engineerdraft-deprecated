@@ -16,6 +16,7 @@ title = "AndroidDraft"
     List of devices attached
     MX21CA1ALJZM4D2227	device
     
+<!--more-->
    
 ## 破解 Android 程序通常方法是将apk   
 文件利用 ApkTool反编译, 生成 Smali 格式的反汇编代码, 然后阅读 Smali 文件的代码来理解程序的运行机制, 找到突破口进行修改, 最后利用 ApkTool 重新编译生成apk 文件, 并签名, 最后进行测试
