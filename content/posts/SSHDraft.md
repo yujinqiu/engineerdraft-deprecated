@@ -127,6 +127,13 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
 比较常见选项组合:   
 	
 	-nNT
+
+### Rsync 指定端口  
+#### 背景
+需要从服务器A(10086)向服务器 B(22端口) rsync 数据, 处于安全性上考虑, 服务器 A 的 ssh 隐藏为其他端口(10086 为例), 如果直接 rsync 会提示 rsync 直接采用10086 端口  
+无法进行数据同步.  解决方法:  
+
+    rsync -HavP -e 'ssh -p 22' username@hostname:src dst
 	
 
 #### Reference

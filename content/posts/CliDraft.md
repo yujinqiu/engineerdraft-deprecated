@@ -139,3 +139,17 @@ mod 很类似 tmux 能够attach(输入命令`mocp`) 和 detach(`q`)
 nc 和 telnet 默认是交互式, 可是我们经常需要非交互, 其实解决方案很简单   
 
 	echo "cmd "  | nc  host  port
+### date
+#### 背景
+我们经常需要在 timestamp 和 datetime 之间进行转换  
+获取当前 timestamp
+
+    date +%s
+    root@host:~# date +%s
+    1420952676
+timestamp => datetime  
+
+    date -d @ts
+    date -d @1420952676
+    root@host:~# date -d @1420952676
+    Sun Jan 11 13:04:36 CST 2015

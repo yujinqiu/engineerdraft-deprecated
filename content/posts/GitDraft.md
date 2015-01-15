@@ -117,3 +117,11 @@ Use `?` to get the whole list of available options.
     Merge branch 'dev' of ssh://git.xiaojukeji.com:22/op/servicetree into dev
 
 从 Merge 中可以选择 `-m` 对应的选项. 
+
+## Git 删除远程 repo 文件, 保留本地文件
+### 背景  
+在项目开发过程中, 有一个策略文件, 由于经常需要变更不太适合进入 repo, 最开始的时候没有考虑清楚提交进去,  现在需要从远程 repo 删除, 但是需要保留本地文件, 因为项目运行需要依赖这个文件. 
+
+### 解决方案  
+
+    git rm --cached  FILE
