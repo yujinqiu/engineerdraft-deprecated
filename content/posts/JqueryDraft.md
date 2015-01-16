@@ -40,6 +40,8 @@ blocks syntax should be:
     
 so we get `Unexpected token :` error  
 
+<!--more-->
+
 #### 解决方案
 在 server 端增加 JSONP 返回接口. 
 

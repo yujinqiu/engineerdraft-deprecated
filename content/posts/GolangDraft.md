@@ -26,6 +26,7 @@ descriptions = "Golang 相关知识"
 %3d 表示输出数字的宽度至少为 3  
 0   填充前导的0而非空格；对于数字，这会将填充移到正负号之后
 
+<!--more-->
 
 ## Golang 字符串 split
 ### 背景
@@ -237,3 +238,79 @@ Server 端代码:
 
          options := r.MultipartForm.Value["options[]"] #获取HTML数组内容.
  如果form里面变量都是唯一的，直接用parseFormValue，和parseFile就可以，因为返回的都是单个变量而不是一个数组了，省的另外操作数组。
+ 
+ ## Golang post https 服务
+ ### 背景 
+ 公司有一个服务是利用 https 提供服务的, 在改域名下提供一个 http 接口.  利用 curl POST  
+ 
+     curl  -d 'name=foo' https://foo.bar.com 
+     提示错误: Get https://golang.org/: certificate is valid for *.appspot.com, *.*.appspot.com, appspot.com, not golang.org
+     
+     curl -d 'name=foo' -k  https://foo.bar.com 才可以  
+     
+     -k, --insecure
+              (SSL)  This option explicitly allows curl to perform "insecure" SSL connections and transfers. All SSL connections are attempted to be made secure
+              by using the CA certificate bundle installed by default. This makes all connections considered "insecure" fail unless -k, --insecure is used.
+
+              See this online resource for further details: http://curl.haxx.se/docs/sslcerts.html  
+             
+### golang 代码
+
+    package main
+    
+    import (
+        "fmt"
+        "net/http"
+        "crypto/tls"
+    )
+
+    func main() {
+        transport := &http.Transport{
+            TLSClientConfig : &tls.Config{InsecureSkipVerify: true},
+        }
+        
+        client := &http.Client{Transport: transport}
+        
+        _, err := client.Get("https://golang.org/")
+    }
+    
+    
+[refer](http://stackoverflow.com/questions/12122159/golang-how-to-do-a-https-request-with-bad-certificate)
+
+
+## Go get 工具  
+今天在使用第三方服务的时候, 在使用一个项目的时候, 需要获取对应的 package   
+
+    go  get  ./...
+    
+`go get` 命令了解, 可是有`threee dot` 没有看到对应的文档说明, 只能阅读对应的代码. 发现原来是这样的.  
+
+    // downloadPaths prepares the list of paths to pass to download.
+    // It expands ... patterns that can be expanded.  If there is no match
+    // for a particular pattern, downloadPaths leaves it in the result list,
+    // in the hope that we can figure out the repository from the
+    // initial ...-free prefix.
+    func downloadPaths(args []string) []string {
+	args = importPathsNoDotExpansion(args)
+	var out []string
+	for _, a := range args {
+		if strings.Contains(a, "...") {
+			var expand []string
+			// Use matchPackagesInFS to avoid printing
+			// warnings.  They will be printed by the
+			// eventual call to importPaths instead.
+			if build.IsLocalImport(a) {
+				expand = matchPackagesInFS(a)
+			} else {
+				expand = matchPackages(a)
+			}
+			if len(expand) > 0 {
+				out = append(out, expand...)
+				continue
+			}
+		}
+		out = append(out, a)
+	}
+	return out
+    }
+go get 在获取到对应的下载的 path 的时候, 对 `...` 进行特殊处理, `...` 作用就是**对该目录下的所有文件进行 go get**
