@@ -125,3 +125,13 @@ Use `?` to get the whole list of available options.
 ### 解决方案  
 
     git rm --cached  FILE
+    
+## Tortoise Git 免密码 Push 问题
+### 背景 
+和 FE 同学进行合作, 为了提高协同工作的效率, 开始手把手教 FE 同学使用 Git, 其中为了避免 FE 同学在 git clone 和 push 的时候输入密码, 使用 Puttygen 生成对应的公钥和私钥对, 开始的时候一切都 ok.    
+第二天 FE 同学反馈说需要输入密码. 考虑到 FE 同学进行重启, 将问题怀疑在ssh-agent 没有启动, search 之后, 常见的方案是:  
+
+	eval `ssh-agent -s` 
+	ssh-add  $<path_to_private_key>
+	
+发现没有效果.   继续 search 之后, 发现Puttygen 上面居然有一个 Pagent, 看名字应该是这个东西.  然后启动之后, 居然没有弹出窗体, 难道没有启动? 继续执行, 提示已经 running. WTF!!!. 无意间想到, 可能在 系统托盘(system tray)里边, 找到之后, 右键直接 add key 之后一切 ok. 

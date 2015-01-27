@@ -314,3 +314,16 @@ Server 端代码:
 	return out
     }
 go get 在获取到对应的下载的 path 的时候, 对 `...` 进行特殊处理, `...` 作用就是**对该目录下的所有文件进行 go get**
+
+## Go log 知识点
+程序中输出日志其实是一件艺术的事情, 首先日志一定要有, 不然出现问题的时候就悲剧了, 根本就无从下手. 然后日志要详细但是不啰嗦. 太过啰嗦很容易导致有用的信息被淹没  
+golang 语言中自己就提供了 log 库.  
+
+### log 如何写入到磁盘中
+
+	f, err :=  os.OpenFile(logFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	log.SetOutput(f)
+	
+### 日志如何设置
+
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)

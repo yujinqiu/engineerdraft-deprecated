@@ -71,3 +71,14 @@ description = "Mysql 手稿"
 
 	-s, --silent        Be more silent. Print results with a tab as separator,
                       each row on new line.
+
+## Mysql 异常
+### 1290 the mysql server is running with the read-only option 
+1: 确认权限问题   
+2: show variables like '%read_only%'; 
+
+	Variable_name  Value
+	read_only       On #这里应该为 OFF
+3: 设置 read_only = off  
+
+	set GLOBAL read_only = false;  
