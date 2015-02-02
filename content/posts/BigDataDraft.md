@@ -1,6 +1,6 @@
 +++
 date = "2015-02-02T20:30:22+08:00"
-draft = fase
+draft = false
 title = "BigDataDraft"
 
 +++
