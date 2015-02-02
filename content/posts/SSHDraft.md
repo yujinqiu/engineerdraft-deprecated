@@ -150,3 +150,18 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
         HostName foo.com
         Port 22
         GSSAPIAuthentication no
+
+### ssh-copy-id 添加信任关系  
+1: 利用 ssh-keygen 生成一对密钥对   
+2: ssh-copy-id  **-i**  user@host  
+-i 默认是读取`~/.ssh/id_rsa.pub` 如果需要读取其它公钥文件, 只需要 -i  path2publickey 
+
+### ssh 验证 public 和 private key 是否是一对
+有时候在追查问题的时候, 我们验证是否因为 copy/paste 错误导致的问题.   
+解决方案:  
+
+	ssh-keygen -y -f <private key> 
+	
+	-y      This option will read a private OpenSSH format file and print an OpenSSH public key to stdout.
+	
+通过读取 private key 得到 public key , 然后直接对比 public 可以 即可

@@ -135,3 +135,12 @@ Use `?` to get the whole list of available options.
 	ssh-add  $<path_to_private_key>
 	
 发现没有效果.   继续 search 之后, 发现Puttygen 上面居然有一个 Pagent, 看名字应该是这个东西.  然后启动之后, 居然没有弹出窗体, 难道没有启动? 继续执行, 提示已经 running. WTF!!!. 无意间想到, 可能在 系统托盘(system tray)里边, 找到之后, 右键直接 add key 之后一切 ok. 
+
+## Git tag 
+### 背景
+在使用git的过程中, 我们通常喜欢利用 tag 来进行标记, 进行发布. 
+### How to
+
+	git tag -a  v1.0.0 #会提示对应输入, 要求输入 annotation
+	git tag -l -n3  #注意-n 和 3 之间不能有空格. 
+	# three lines of message for every tag
