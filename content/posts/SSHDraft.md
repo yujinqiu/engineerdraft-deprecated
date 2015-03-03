@@ -165,3 +165,10 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
 	-y      This option will read a private OpenSSH format file and print an OpenSSH public key to stdout.
 	
 通过读取 private key 得到 public key , 然后直接对比 public 可以 即可
+
+### 获取机器的fingerprint 
+#### 背景
+最近在折腾[sshpiper](https://github.com/tg123/sshpiper) 的时候遇到了一个诡异的问题, 需要判断 sshpiper 连接到的是哪台机器上.  在第一次连接的时候 ssh 会显示连接机器的 fingerprint, 因此需要通过机器的 fingerprint 来确定对应的机器.   
+#### 获取方法 
+
+	ssh-keygen -l -f <privatekey>

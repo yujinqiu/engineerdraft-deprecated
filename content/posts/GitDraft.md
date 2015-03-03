@@ -144,3 +144,24 @@ Use `?` to get the whole list of available options.
 	git tag -a  v1.0.0 #会提示对应输入, 要求输入 annotation
 	git tag -l -n3  #注意-n 和 3 之间不能有空格. 
 	# three lines of message for every tag
+	
+	
+## Git hook
+Git hooks are event-based. When you run certain git commands, the software will check the **hooks directory** within the git repository to see if there is an associated script to run.   
+
+Some scripts run prior to an action taking place(pre-hook), which can be used to ensure code compliance to standars, for sanity checking, or to set up an environment.  Other scripts run after an event(post-hook) in order to deploy code, re-establish correct permissions, and so forth.   
+
+git hook 分为 client-side hook 和  server side hook.  
+### client-side hook
+
+1. Committing-Workflow hooks: commiting hooks are used to dictate actions that should be taken around when a commit is being made.  They are used to run sanity checks, pre-populate commit messages, and verify message details. You can also use this to provide notifications upon committing.
+
+2. Email Workflow hooks: This category of hooks encompasses actions that are taken when working with emailed patches. Projects like the Linux kernel submit and review patches using an email method. These are in a similar vein as the commit hooks, but can be used by maintainers who are responsible for applying submitted code.
+
+3. Other: Other client-side hooks include hooks that execute when merging, checking out code, rebasing, rewriting, and cleaning repos.
+
+### server-side hook
+钩子在 server 端运行  
+
+1. Pre-receive and post-receive: These are executed on the server receiving a push to do things like check for project conformance and to deploy after a push.  
+2. Update: This is like a pre-receive, but operates on a branch-by-branch basis to execute code prior to each branch being accepted.

@@ -100,3 +100,14 @@ Cent OS 利用 `systemctl` 替代了 `service`,  第一次操作需要进行以�
 	systemctl enable sshd.service
 	systemctl start sshd.service 
 	systemctl status sshd.service
+
+## 故意生成 coredump  
+最近在研究如何限制 linux coredump, 主要解决问题  
+
+1. 避免多线程程序同时大量 coredump  
+2. 避免大内存程序 coredump   
+其中为了方便测试, 研究如何强制 coredump ,  方法其实很简单   
+其中 `python` 进入交互模式, 然后 `ctrl + \` 强制进行 coredump    
+### 原理  
+`ctrl + \` 在 linux 平台上会生成 QUIT signal , 通常会导致改程序退出或者 coredump  
+这个是 *ninx 平台的特点, 和python 没有关系, 你也可以 `sleep 30` 然后 `ctrl + \` 强制进行 coredump . 

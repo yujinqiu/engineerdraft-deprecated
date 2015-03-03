@@ -327,3 +327,25 @@ golang 语言中自己就提供了 log 库.
 ### 日志如何设置
 
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	
+## Golang 判断文件是否存在   
+### 文件存在
+
+	if _, err := os.Stat(filename); err == nil {
+		fmt.Println("file exists")
+	}
+### 文件不存在  
+
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		fmt.Println("no such filename")
+	}
+	
+### 好奇os.IsNotExist(err) 如何获取到错误类型? 
+
+	// IsNotExist returns a boolean indicating whether the error is known to
+	// report that a file or directory does not exist. It is satisfied by
+	// ErrNotExist as well as some syscall errors.
+	func IsNotExist(err error) bool {
+		return isNotExist(err)
+	}
+	#其中 isNotExist() 是为了实现跨平台, 在 error_plan9.go 和 error_unix.go 和 error_windows.go 里边分别实现了 isNotExist. 
