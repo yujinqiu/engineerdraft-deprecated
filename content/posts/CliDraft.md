@@ -153,3 +153,9 @@ timestamp => datetime
     date -d @1420952676
     root@host:~# date -d @1420952676
     Sun Jan 11 13:04:36 CST 2015
+
+### crontab 
+#### 新增 crontab   
+经常我们需要在 crontab 中新增一个记录, 快捷的解决方案是:  
+
+    (crontab -l ; echo '*/1 * * * * CMD') | crontab -
