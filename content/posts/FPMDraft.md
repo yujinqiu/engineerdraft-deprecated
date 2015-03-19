@@ -124,4 +124,52 @@ eg:
 
 	root@10.223.21.205:~# gem env | grep INSTALL
   	- INSTALLATION DIRECTORY: /usr/lib/ruby/gems/1.8
+  	
+  	
+  	
+## FPM 打包升级 python2.7
+###  背景  
+运维过 RHEL/CentOS 的同学基本上都知道CentOS 为了追求系统的稳定, 软件包相对来说是比较旧的. 大家抱怨比较多的是 python 的版本2.6.6 , 大家比较喜欢的是 python2.7, 因此大家迫切希望能够有python2.7 的 rpm , 一键进行升级.  其实之前升级过一次, 但是不小心把 yum 给搞坏了, 要知道 yum 其实也是 python 写的程序, 因此有一个原则需要遵守的是 python2.7 必须和 python 2.6 隔离开.  
+### 安装方法  
 
+1: 下载 python2.7.9 
+2:  tar xf Python-2.7.9.tgz   
+3:   
+
+    cd Python-2.7.6.tgz
+    # Python2.7编译安装后会安装到这个目录，方便打包
+    export INTERMEDIATE_INSTALL_DIR=/tmp/installdir-Python-2.7.6
+    # RPM包安装后Python2.7的目录
+    export INSTALL_DIR=/usr/local
+    LDFLAGS="-Wl,-rpath=${INSTALL_DIR}/lib ${LDFLAGS}" \
+    ./configure --prefix=${INSTALL_DIR} --enable-unicode=ucs4 \
+    --enable-shared --enable-ipv6
+    make
+    make install DESTDIR=${INTERMEDIATE_INSTALL_DIR}
+    
+ 4: 使用 fpm 打包 
+ 
+        fpm -s dir -t rpm -n python2.7 -v '2.7.9' \
+        -a 'x86_64' \
+        -d 'openssl' \
+        -d 'bzip2' \
+        -d 'zlib' \
+        -d 'expat' \
+        -d 'db4' \
+        -d 'sqlite' \
+        -d 'ncurses' \
+        -d 'readline' \
+        -d 'zlib-devel' \
+        -d 'bzip2-devel' \
+        -d 'openssl-devel' \
+        -d 'ncurses-devel'  \
+        -d 'sqlite-devel'  \
+        --description='python 2.7.9 package by op' \
+        --directories=${INSTALL_DIR}/lib/python2.7/ \
+        --directories=${INSTALL_DIR}/include/python2.7/ \
+        -C ${INTERMEDIATE_INSTALL_DIR} .
+        
+#### refer
+http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/
+https://github.com/h2oai/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only
+http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/
