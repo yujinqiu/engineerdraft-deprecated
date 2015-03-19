@@ -349,3 +349,68 @@ golang 语言中自己就提供了 log 库.
 		return isNotExist(err)
 	}
 	#其中 isNotExist() 是为了实现跨平台, 在 error_plan9.go 和 error_unix.go 和 error_windows.go 里边分别实现了 isNotExist. 
+
+
+## Golang 函数数组
+### 定义
+
+	var farr []func()
+
+### 定义并初始化 
+
+	func do_stuff() {
+		fmt.Println("do silly stuff")
+	}
+	var  farr []func(){do_stuff}
+	
+### 调用数组内的函数  
+
+   	farr[0]()
+   	
+### 高阶函数( high order 函数) 
+所谓高阶函数其实就是一个比较特殊的函数, 该函数可以以输入函数, 返回函数
+
+    package main
+
+    import "fmt"
+
+    func z(i int) int {
+        return i * 100
+    }
+
+    func foo(bar func(int)int) (func(int) int) {
+        base := bar(1)
+        return func(y int) int {
+            return x + base  //闭包   
+        }
+    }
+
+    func main () {
+        a := foo(z)
+        fmt.Printf("result: %v\n", a(2))
+    }
+
+    
+
+
+
+## Golang 标准库
+import "math/rand" , 该 package 实现伪随机数生成   
+随机数生成是通过 Source.  顶级的函数,比如 Float64 和 Int 使用的是共享的 Source 会产生**确定性** 的结果,   
+我们可以使用 Seed 函数来初始化改变 Source 让其产生不同的行为.  
+
+
+    package main
+
+    import (
+            "fmt"
+            "time"
+            "math/rand"
+           )
+
+    func main() {
+        rand.Seed(time.Now().UnixNano())  
+        //注意如果 Seed() 内部的随机因子是确定的数, 每次运行的随机的结果是一样.
+        //曾经利用这个特性, 以每天的日期作为随机的种子进行虚拟机的数目的产生.
+        fmt.Println(rand.Intn(100))
+    }
