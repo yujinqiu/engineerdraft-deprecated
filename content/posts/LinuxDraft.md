@@ -111,3 +111,25 @@ Cent OS 利用 `systemctl` 替代了 `service`,  第一次操作需要进行以�
 ### 原理  
 `ctrl + \` 在 linux 平台上会生成 QUIT signal , 通常会导致改程序退出或者 coredump  
 这个是 *ninx 平台的特点, 和python 没有关系, 你也可以 `sleep 30` 然后 `ctrl + \` 强制进行 coredump . 
+
+
+## 疑难杂症  
+### 背景   
+今天同事反馈, **tail** 一个文件的时候 提示:   no space left on device   
+然后第一反应是 `df` 查看磁盘空间:  
+
+    Filesystem            Size  Used Avail Use% Mounted on
+    /dev/sda1             9.9G  2.1G  7.4G  22% /
+    /dev/sda3              20G 1009M   18G   6% /usr/local
+    tmpfs                  32G   16K   32G   1% /dev/shm
+    /dev/sda4             794G  244G  511G  33% /home
+    
+没有看到任何空间不足的提示, 难道是 inode 节点空间不足?   `df -i` 发现也不是.     
+search 之后发现原来是 kernel 2.6.13 开始引入 Inotify 导致.  需要修改 **max_user_watches**   
+
+    查看: sysctl fs.inotify.max_user_watches   
+    修改: sysctl fs.inotify.max_user_watches = 16384
+    
+     /proc/sys/fs/inotify/max_user_watches 表示:  
+     This specifies an upper limit on the number of watches that can be created per real user ID.
+
