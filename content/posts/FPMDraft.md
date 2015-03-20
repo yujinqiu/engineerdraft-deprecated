@@ -170,6 +170,13 @@ eg:
         -C ${INTERMEDIATE_INSTALL_DIR} .
         
 #### refer
-http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/
-https://github.com/h2oai/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only
-http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/
+[http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/](http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/)
+[https://github.com/h2oai/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only](https://github.com/h2oai/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only)
+[http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/](http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/)
+
+### python 2.7.9 福利
+python 2.7.9 之后就内置 pip 安装程序,  开启如下:  
+
+    python2.7 -m ensurepip
+
+
