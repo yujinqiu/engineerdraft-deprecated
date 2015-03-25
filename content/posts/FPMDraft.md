@@ -28,6 +28,8 @@ title = "FPMDraft"
 ### fpm 制定 package 依赖
 
 	fpm -s dir -t rpm -n langley_online -v 1.0.0 -d 'thrift >= 0.9.1' -d 'boost >= 1.41.0' -d 'libevent >= 2.0.21' -d 'fastbit >= 2.0.1' --prefix=/home/<user>   --after-install=langley_online/install/install_hook.sh langley_online
+	
+<!-- more -->
         
 ### 如何打包 C/C++ 项目
 c/c++ 项目中比较讨厌的是项目的依赖, 为了提高开发效率需要将各种依赖包打包为 RPM, 最开始一直想不明白的是, 如果我 make && make install 之后就 pack 了, 那么如何pack呢 ?   直到今天多管闲事帮同事打包thrift之后才知道 how. 
@@ -138,11 +140,11 @@ eg:
 
     cd Python-2.7.6.tgz
     # Python2.7编译安装后会安装到这个目录，方便打包
-    export INTERMEDIATE_INSTALL_DIR=/tmp/installdir-Python-2.7.6
+    export INTERMEDIATE_INSTALL_DIR=/tmp/installdir-Python-2.7.9
     # RPM包安装后Python2.7的目录
     export INSTALL_DIR=/usr/local
     LDFLAGS="-Wl,-rpath=${INSTALL_DIR}/lib ${LDFLAGS}" \
-    ./configure --prefix=${INSTALL_DIR} --enable-unicode=ucs4 \
+    ./configure --prefix=${INSTALL_DIR}  \
     --enable-shared --enable-ipv6
     make
     make install DESTDIR=${INTERMEDIATE_INSTALL_DIR}
@@ -168,6 +170,9 @@ eg:
         --directories=${INSTALL_DIR}/lib/python2.7/ \
         --directories=${INSTALL_DIR}/include/python2.7/ \
         -C ${INTERMEDIATE_INSTALL_DIR} .
+   
+#### ChangeLog
+取消 --enable-unicode=ucs4 编译选项, 该选项会导致 json decode 的时候出错. 
         
 #### refer
 [http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/](http://theo.im/blog/2014/05/16/use-fpm-to-create-python-rpm-packages/)
@@ -180,3 +185,42 @@ python 2.7.9 之后就内置 pip 安装程序,  开启如下:
     python2.7 -m ensurepip
 
 
+## 如何查看 RPM 包文件列表
+### 背景  
+经常我们需要了解一个 rpm 包在安装完成之后, 会安装在什么路径下, 安装什么文件, 需要查看 rpm 内部的文件和路径. 
+### 常规方法
+
+    rpm -qpl  pkg.RPM
+    
+    rpm -qpl rubygem-fpm-1.3.3-1.noarch.rpm
+    /usr/bin/fpm
+    /usr/lib/ruby/gems/1.8/cache/fpm-1.3.3.gem
+    /usr/lib/ruby/gems/1.8/doc
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/.require_paths
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/CHANGELIST
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/CONTRIBUTORS
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/LICENSE
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/bin/fpm
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/lib/fpm.rb
+    /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/lib/fpm/command.rb
+
+### 比较巧妙的方法
+
+    less  pkg.RPM  #发现 less zip,tar.gz 文件也是可以的
+    less rubygem-fpm-1.3.3-1.noarch.rpm
+    Name        : rubygem-fpm                  Relocations: /
+    Version     : 1.3.3                             Vendor: Jordan Sissel
+    Release     : 1                             Build Date: Tue 03 Mar 2015 01:46:09 PM CST
+    Install Date: (not installed)               Build Host: svn02.qq.diditaxi.com
+    Group       : Languages/Development/Ruby    Source RPM: rubygem-fpm-1.3.3-1.src.rpm
+    Size        : 702822                           License: MIT-like
+    Signature   : (none)
+    Packager    : <root@svn02.qq.diditaxi.com>
+    URL         : https://github.com/jordansissel/fpm
+    Summary     : Convert directories, rpms, python eggs, rubygems, and more to rpms, debs,     solaris packages and more. Win at package management without wasting pointless hours debugging bad rpm specs!
+        Description :
+    Convert directories, rpms, python eggs, rubygems, and more to rpms, debs, solaris packages and more. Win at package management without wasting pointless hours debugging bad rpm specs!
+    -rwxr-xr-x    1 root    root                      364 Mar  3 13:46 /usr/bin/fpm
+    -rw-r--r--    1 root    root                   114176 Mar  3 13:46 /usr/lib/ruby/gems/1.8/cache/fpm-1.3.3.gem
+    drwxr-xr-x    2 root    root                        0 Mar  3 13:46 /usr/lib/ruby/gems/1.8/doc
+    -rw-r--r--    1 root    root                       12 Mar  3 13:46 /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/.require_paths
