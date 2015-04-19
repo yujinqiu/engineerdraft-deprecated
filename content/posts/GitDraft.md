@@ -27,12 +27,17 @@ Use `?` to get the whole list of available options.
 <!--more-->
 
 
-## Git checkout 某个分支
+
+## Git checkout 某个tag分支
 ### 背景  
 在使用 git 的时候, 经常会使用第三方开发的程序/lib 的特定版本(兼容性问题) ,  
 
 	git tag -l
 	git checkout tags/<tag_name> 
+	
+## Git 重命名分支 
+
+    git branch -m FROM TO
 	
 ## Git checkout 远程的一个分支
 ### 背景
@@ -40,7 +45,24 @@ Use `?` to get the whole list of available options.
 	
 	git fetch origin 
 	git branch -v -a 
-	git checkout -b test origin/test
+	git checkout -b test origin/test   
+	
+## 删除远程的一个分支
+
+    git push origin :NAME
+	
+## 本地分支和远程分支的 diff
+### 背景
+在多人协作的开发场景下, 我怎么知道我现在的分支和 upstream 的差异  
+
+    git diff master..upstream/master
+    
+    
+## Git stash
+git stash save "YOUR MSG"  
+git stash list  
+git stash apply stash@{1}  
+git stash drop 
 	
 ## Git 多人开发流程
 
@@ -165,3 +187,60 @@ git hook 分为 client-side hook 和  server side hook.
 
 1. Pre-receive and post-receive: These are executed on the server receiving a push to do things like check for project conformance and to deploy after a push.  
 2. Update: This is like a pre-receive, but operates on a branch-by-branch basis to execute code prior to each branch being accepted.
+
+
+## Git trick Skill
+### 背景
+在生产环境中, 可能我们会有一个密码文件, 不想让大家看到, 当时自己又记不住.     
+假设文件名: passwd
+
+
+    cat passed | git hash-object -w --stdin  #可以得到文件的 HASH
+    git tag passwd HASH
+    然后就可以删除 passwd 文件
+    git cat-file blob passed
+    
+    
+### git log
+
+    git log FILE 查看某个人家的变化记录
+    git log -S "LINE"  查看 LINE 这行出现的提交
+    
+    
+    git reflog  其实有更好的替代方式:  git log -g 有更完整的信息.
+    
+    
+### 好习惯  
+
+    git  pull --rebase 
+    如果出现冲突, 解决冲突
+    git add CONFLICT-FILE
+    git rebase --continue
+    git  diff HEAD FILE  #head working space 和 HEAD 区域对比
+    
+    
+## 有用比较生僻功能
+### cherry-pick
+假设我们并行开发两个版本, 其中有一个版本2.0 是稳定版本,  其中版本3.0 是在开发版本,  3.0 引入了一个比较高级的功能或者比较重要的 bug, 我们迫切希望在2.0 中能够进行添加, 但是我们又不能够把3.0 和 2.0 直接 merge, 因为3.0 中还有很多其他的 feature 是我们目前不需要的. 这时候就可以使用 cherry-pick.   
+cherry-pick 的本质功能是: 对一个 commit 在当前的 branch 中 重放.
+
+    git checkout BRANCH
+    git cherry-pick HASH
+    如果正常就 ok, 如果冲突, 需要手工解决冲突, 然后按照提示
+    
+    Automatic cherry-pick failed.  After resolving the conflicts,
+    mark the corrected paths with 'git add <paths>' or 'git rm <paths>'
+    and commit the result with: 
+
+        git commit -c 15a2b6c61927e5aed6718de89ad9dafba939a90b
+
+
+
+## Git clone 部分 repo  
+### 背景 
+如果你在 clone 整个 git repo 的时候, 发现这个 repo 特别大, 可以通过以下方式来进行优化:  
+
+    git clone --depth N  URL  
+   
+其中 N 表示 clone 下来几个版本. 
+    

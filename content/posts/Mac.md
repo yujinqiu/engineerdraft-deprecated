@@ -27,6 +27,27 @@ Mac os X 在最小化窗体之后, `command + tab` 是不能够直接恢复, 具
 command + tab 定位到对应的 Application 然后 `alt` 然后同时放开 `alt command`
 
 
+### Mac 禁用启动声音  
+#### 背景 
+每次 mac 重启或者启动的时候, 一直会有一声 bong 的声音, 在工作室或者其他人多的环境经常会影响到别人, 比较尴尬. 如何解决:  
+#### 解决方案  
+网上的各种方法其实都不是很靠谱,  经过自己的各种摸索之后, 终于找到靠谱的方案.    
+**注意**: 为了避免各种权限问题, 建议直接用 **root** 权限操作. `sudo su - root` 
+
+1: 在 `/usr/local/bin/silence.sh`  
+
+    #!/bin/bash
+
+    nvram SystemAudioVolume="%01"
+
+2: 修改权限位, 让该脚本可以执行  
+    
+    chmod 755 /usr/local/bin/silence.sh
+   
+3: 设置系统关闭的时候执行的 hook.  
+    
+    defaults write com.apple.loginwindow LogoutHook /usr/local/bin/silence.sh
+
 ### 清除 DNS cache
 
 	sudo dscacheutil -flushcache

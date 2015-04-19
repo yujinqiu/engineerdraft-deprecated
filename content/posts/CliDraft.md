@@ -158,4 +158,44 @@ timestamp => datetime
 #### 新增 crontab   
 经常我们需要在 crontab 中新增一个记录, 快捷的解决方案是:  
 
-    (crontab -l ; echo '*/1 * * * * CMD') | crontab -
+    (crontab -l ; echo '*/1 * * * * CMD') | crontab -  
+    
+### 文件行列转化
+#### 背景  
+经常我们需要对文件进行行列转化, 比如说  
+
+行: 
+
+    host1
+    host2
+    host3
+   
+   
+列:
+
+    host1,host2,host3
+    
+
+转换命令:  
+
+    paste -d, -s   FILE
+    
+    
+##### paste 命令详解:   
+
+    paste merge lines of files  
+    
+典型用途:  
+    
+    paste <(seq 1 3) <(seq 1 3)
+    1	1
+    2	2
+    3	3
+    
+
+    paste -s <(seq 1 3) <(seq 1 3)
+    1	2	3
+    1	2	3
+
+
+
