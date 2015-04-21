@@ -25,6 +25,19 @@ title = "FPMDraft"
         
         http://golang-basic.blogspot.jp/2014/10/dynamic-programming-problem-maximum.html  
         
+### fpm 打包版本升级
+#### 背景
+在打包 python-supervisor 的时候遇见这样的一个问题, 该打包策略比较复杂, 需要打包多次验证效果.    
+
+    fpm -s dir -t rpm  -n python-supervisor  -v '3.1.3' --iteration 2 -a 'x86_64' --description='A system for controlling process state under UNIX' --after-install='/root/load.sh' -d 'python-meld3' -C supervisord  .
+    
+执行之后, 得到的结果是 `python-supervisor-3.1.3-1.x86_64.rpm`, 第二次打包的时候, 如果还是这样的命令得到的是相同的结果, 很多时候我们还是希望能够有一个版本的标识, 来区分各个打包的版本,  其中 `3.1.3` 是模块的版本, 在出问题的时候为了方便追溯问题, 不建议修改.  因此只能修改 `3.1.3-1`, 后面的 `1` , fpm 提供了该选项.  
+
+    --iteration ITERATION
+   
+
+    
+        
 ### fpm 制定 package 依赖
 
 	fpm -s dir -t rpm -n langley_online -v 1.0.0 -d 'thrift >= 0.9.1' -d 'boost >= 1.41.0' -d 'libevent >= 2.0.21' -d 'fastbit >= 2.0.1' --prefix=/home/<user>   --after-install=langley_online/install/install_hook.sh langley_online
@@ -224,3 +237,10 @@ python 2.7.9 之后就内置 pip 安装程序,  开启如下:
     -rw-r--r--    1 root    root                   114176 Mar  3 13:46 /usr/lib/ruby/gems/1.8/cache/fpm-1.3.3.gem
     drwxr-xr-x    2 root    root                        0 Mar  3 13:46 /usr/lib/ruby/gems/1.8/doc
     -rw-r--r--    1 root    root                       12 Mar  3 13:46 /usr/lib/ruby/gems/1.8/gems/fpm-1.3.3/.require_paths
+    
+ 
+## 如何解压 RPM 
+### 背景
+有时候我们需要定制化 RPM 包的内容, 比如说在已有的 RPM 包中增加一个配置, 或者增加一个启动脚本.  这时候就需要将rpm 包重新打开, 然后增加内容, 然后在重新打回去.  
+
+    rpm2cpio  pkg  |  cpio -idmv
