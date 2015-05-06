@@ -244,3 +244,33 @@ python 2.7.9 之后就内置 pip 安装程序,  开启如下:
 有时候我们需要定制化 RPM 包的内容, 比如说在已有的 RPM 包中增加一个配置, 或者增加一个启动脚本.  这时候就需要将rpm 包重新打开, 然后增加内容, 然后在重新打回去.  
 
     rpm2cpio  pkg  |  cpio -idmv
+
+
+## yum 安装 pkg 的时候如何指定 repo
+### 背景 
+最近公司使用 yum 来进行代码发布, 使用久之后, 发现一个问题就是 如果在一个 repo 下面有多个 repo 的 server , 比如有** puppet**, 然后你在` yum install -y` 的时候, 通常需要search 全部的 repo, 在执行的效率上慢了很多, 因此我们对于确定知道 pkg 的 在哪个 repo 的地方的时候, 希望直接从这个 repo 下载.  
+
+    1. yum repolist   获取 repo id
+    2. yum --disablerepo="*" --enablerepo="${repo}" install -y  pkg
+    
+    
+## yum 如何下载到最新的 pkg
+###  背景  
+通常我们在 pack 最新的 package,  在使用  
+    
+    createrepo --update  ./
+之后, 就希望在其它机器上就可以使用` yum install -y` 进行安装, 可是经常发现找不到最新的 pkg,  开始的时候有人提出来了,  
+
+    yum make clean   
+    
+然后发现过了很久居然没有人质疑这件事情?  难道一定要这样 make clean ?   
+RTFM之后, 发现其实是有解决方案的.   在` yum.conf` 设置时间足够短就 ok.  
+
+
+    metadata_expire Time (in seconds) 
+    after which the metadata will expire. So that if the current metadata downloaded is less than this many
+              seconds old then yum will not update the metadata against the repository.  If you find that yum is not downloading information on updates
+              as often as you would like lower the value of this option. You can also change from the default of using seconds to using days, hours  or
+              minutes  by appending a d, h or m respectively.  The default is 6 hours, to compliment yum-updatesd running once an hour.  It’s also pos-
+              sible to use the word "never", meaning that the metadata will never expire. Note that when using a metalink file the metalink must always
+              be newer than the metadata for the repository, due to the validation, so this timeout also applies to the metalink file.

@@ -50,6 +50,17 @@ Use `?` to get the whole list of available options.
 ## 删除远程的一个分支
 
     git push origin :NAME
+    
+    
+## 删除一个已经提交的文件
+### 背景
+在开发的时候有可能会不小心将配置文件提交进去, 如何删除 repo 中的文件(保留 repo 的文件),  同时保证被其他地方 git pull 的时候不会删除库里边的问题.    
+
+    echo "*.config">>.gitignore; 
+    git rm --cached "*.config"; 
+    git add .; 
+    git commit -m "Ignoring and deleting config files." ; 
+    git push origin;
 	
 ## 本地分支和远程分支的 diff
 ### 背景
