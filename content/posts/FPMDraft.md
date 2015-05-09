@@ -274,3 +274,22 @@ RTFM之后, 发现其实是有解决方案的.   在` yum.conf` 设置时间足�
               minutes  by appending a d, h or m respectively.  The default is 6 hours, to compliment yum-updatesd running once an hour.  It’s also pos-
               sible to use the word "never", meaning that the metadata will never expire. Note that when using a metalink file the metalink must always
               be newer than the metadata for the repository, due to the validation, so this timeout also applies to the metalink file.
+              
+              
+## 如何查看一个 rpm 的依赖
+
+    rpm  -qpR PKG
+    -q query
+    -p package
+    -R requires (List capabilities on which this package depends.)
+    
+    yum deplist PKG
+    
+    repoquery --requires  odin-agent
+    
+    
+## yum 下载某个包, 包括依赖
+
+    repotrack PKG 下载全部依赖
+    yumdownloader --resove  PKG 只下载本地确实 pkg
+    
