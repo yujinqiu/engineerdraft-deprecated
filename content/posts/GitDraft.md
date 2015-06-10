@@ -254,4 +254,21 @@ cherry-pick 的本质功能是: 对一个 commit 在当前的 branch 中 重放.
     git clone --depth N  URL  
    
 其中 N 表示 clone 下来几个版本. 
+
+
+## Git LFS
+这里的 LFS 是 github 最近推出的 Large File System.  
+
+```
+Download and install the Git command line extension for Mac, Windows, or Linux (or see our full list of pre-built binaries). You only have to set up Git LFS once, but make sure you have the latest release (v0.5.1) installed.
+
+Select the file types you'd like Git LFS to manage (or directly edit your .gitattributes). You can configure additional file extensions at anytime.
+
+git lfs track "*.psd"
+Commit and push to GitHub.
+
+git add file.psd
+git commit -m "Add design file"
+git push origin master
+```
     

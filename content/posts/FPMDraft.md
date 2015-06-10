@@ -293,3 +293,12 @@ RTFM之后, 发现其实是有解决方案的.   在` yum.conf` 设置时间足�
     repotrack PKG 下载全部依赖
     yumdownloader --resove  PKG 只下载本地确实 pkg
     
+ 
+## yum 按照远程的一个 pkg
+### 背景
+有时候只需要安装一个 repo 的一个 pkg, 因此不想要配置 repo 到 `/etc/yum.repo.d` 下面, 希望安装的时候直接从 repo 下载安装  
+
+### 解决方案 
+
+    yum install -y http://${repo server}/centos/os/6/x86_64/general_rpm/yum-local-repo-0.0.1-0.x86_64.rpm
+    

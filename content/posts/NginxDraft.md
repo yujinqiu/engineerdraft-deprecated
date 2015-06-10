@@ -30,3 +30,17 @@
 	    auth_basic_user_file /etc/nginx/.htpasswd;
 	  
 3. reload nginx 配置即可
+
+
+## nginx 根据 http 方法进行分流 
+### 背景  
+开发项目中使用了 Restful 原则, 然后为保证数据的一致性同时为了提高查询的负载能力, 采用了 1Master NSlave 的模型,  因此需要将 http GET 方法流量均衡到多个 Slave 上.  
+
+         location /v2 {
+            if ($request_method = GET ) {
+                proxy_pass http://tree-slaves;
+                break;
+            }
+            proxy_pass http://tree-master;
+            break;
+        }
