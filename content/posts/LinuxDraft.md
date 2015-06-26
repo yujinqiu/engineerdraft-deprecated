@@ -152,3 +152,102 @@ search 之后发现原来是 kernel 2.6.13 开始引入 Inotify 导致.  需要�
 
     touch /forcefsck
 
+### XFS 文件系统格式化命令 
+
+    mkfs.xfs -f -L /data1 -d agcount=64 -l size=128m,lazy-count=1,version=2 /dev/hioa
+    
+#### 测试性能 dd 命令 
+I
+    dd if=/dev/zero of=/data1/test.dbf bs=8k count=300000 conv=fdatasync
+    注意要记得fdatasync 
+    
+    
+### Linux 日志切分logrotate  
+#### 背景 
+日志可以很方便帮助大家追查各种问题, 其中日志切分需要综合考虑磁盘使用率, 自动清除历史.  线上开始一直使用op 自己开发的库.    
+在使用 agent 的时候, 再想应该使用系统的 logrotate.  
+
+```
+logrotate - rotates, compresses, and mails system logs  
+```
+经常学习之后, 采用如下配置:   
+
+
+```
+/home//influxdb/log/influxdb.log {
+    daily
+    rotate 3
+    compress
+    missingok
+    notifempty
+    copytruncate
+    create 0644 influxdb influxdb
+    dateext
+    dateformat .%Y-%m-%d
+}
+```
+
+#### 注意事项  
+1: 默认情况下 log rotate 只能支持最细粒度的` daily` 级别切分, 不太满足运维上小时级别的要求     
+2: 比较有意思的是 `copytruncate` 能够解决, 一些写的不够友好的模块, 不会检测文件名改变, 重新打开句柄的问题. 
+3: dateext 和 dataformat 一起使用来决定压缩的文件后缀名   
+4: rotate 表示保留的份数  
+
+####  reference   
+[logrotate](http://manpages.ubuntu.com/manpages/hardy/man8/logrotate.8.html)   
+[每小时日志切分](https://packetcloud.net/index.php/making-logrotate-rotate-apache-logs-every-hour-or-2-or-3/)   
+
+### 系统压力测试工具  
+#### 背景   
+在开发监控系统的 agent 过程中, 为了构造各种压力情况, 比如cpu idle < 50 触发报警等, 因此我们特别需要一个工具来实现这个功能. 开始找了一圈发现大家使用的都是 ab 之类的 http 压测工具.  也有同学建议在本机开启一个 http 服务, 然后利用 ab 之类工具来压测, 总感觉不够简单优雅, 直到遇见` stress` 工具, 直到后面遇见 `stress-ng`. 这两个工具同样可以用来压力测试用, 因此特地记录一下.     
+##### stress 和 stress-ng  
+简单说 stress-ng 是 stress 的升级版本,  在 mac 下面 brew 默认有 stress, 没有 stress-ng  
+stress-ng 主要功能:   
+1. CPU compute
+2.  Cache thrashing  
+3.  Drive stress
+4.  I/O syncs  
+5.  VM stress
+6.  Socket stressing
+7.  Context switching  
+8.  Process creation and termination  
+9.  It includes over 60 different stress tests, over 50 CPU specific stress tests that exercise floating point, integer, bit manipulation and control flow, over 20 virtual memory stress tests.
+
+建议在 root 权限下执行, 避免 OOM kill 和其他权限不足的错误.    
+
+
+##### stress 简单用法  
+[下载地址](http://people.seas.harvard.edu/~apw/stress/)  
+ 
+    stress -c 2 -i 1 -m 1 --vm-bytes 128M -t 10s
+    
+    -c 2 : Spawn two workers spinning on sqrt()
+    -i 1 : Spawn one worker spinning on sync() 
+    -m 1 : Spawn one worker spinning on malloc()/free()
+    --vm-bytes 128M : Malloc 128MB per vm worker(default 256MB)
+    -t 10s: Timeout ten seconds  
+    -v: Be verbose 
+
+总体说来比较简单, 如果我们需要压测各个 core 的性能, 需要使用 stress-ng
+    
+    
+##### stress-ng 用法 
+[下载地址](http://kernel.ubuntu.com/~cking/stress-ng/)   
+编译依赖    
+
+    yum install -y libattr-devel.x86_64
+
+打满 cpu 单核: 
+
+    stress-ng --cpu 1 --affinity 1  
+#### 插曲  
+由于线上 glibc 的版本问题, 因此不能安装最新版本, 最新版本的 perf 会导致编译无法通过. 
+    
+#### refer   
+[stress-test-linux-unix-server-with-stress-ng](http://www.cyberciti.biz/faq/stress-test-linux-unix-server-with-stress-ng/)
+
+
+### Rsync 只同步目录结构, 不同步内容  
+
+
+       rsync -HavP -e ssh --include='*/' --exclude='*' SRC DEST

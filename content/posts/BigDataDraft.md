@@ -18,7 +18,12 @@ hbase master 信息存储在zookeeper 中, 可以在 zookeeper 中查询.
 ## start master 和 ./bin/start-hbase.sh 有啥区别? 
 
 	hbase-daemon.sh start master 是用来启动单个 master
-	./bin/start-hbase.sh 会启动整个集群, 其中会读取 hbase-0.96.2-hadoop1/conf/regionservers 用来标记 regionservers 的列表, 扩容的时候不一定需要添加进去, 因为 regionserver 的机器存储在 zookeeper.
+	./bin/start-hbase.sh 会启动整个集群, 其中会读取 hbase-0.96.2-hadoop1/conf/regionservers 用来标记 regionservers 的列表, 扩容的时候不一定需要添加进去, 因为 regionserver 的机器存储在 zookeeper.  
+	
+	
+## 如何下线 region server 
+
+    ./bin/graceful_stop.sh  ${nodename}
 
 
 ## 如何下线 datanode
