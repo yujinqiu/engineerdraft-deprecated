@@ -250,4 +250,34 @@ stress-ng 主要功能:
 ### Rsync 只同步目录结构, 不同步内容  
 
 
-       rsync -HavP -e ssh --include='*/' --exclude='*' SRC DEST
+       rsync -HavP -e ssh --include='*/' --exclude='*' SRC DEST   
+       
+### while 读取多列文件   
+#### 背景   
+有时候我们需要读取一个文件的多列, 分别赋值给不同的变量, 然后对变量进行处理    
+
+    while read col1 col2 ; 
+    do
+        echo $col1 $col2 
+    done < FILE
+    
+    
+### 强制 coredump  
+#### 背景  
+在测试监控系统的时候, 为测试 coredump 的 case, 我们需要故意 core 一个程序, 来验证监控系统能够正常报警.   
+#### 解决方法   
+    
+    sleep  10  
+    然后 ctrl + \  就会自动 coredump  sleep 程序  
+    
+   
+### 强制 OOM kill  
+#### 背景  
+在测试监控系统的时候, 为测试 OOM 的 case, 我们需要让一个程序故意被系统 OOM kill, 来验证监控系统能够正常报警.     
+
+#### 解决方法 
+1. 由于 OOM 是按照一定的算法打分的, 因此为了避免 sshd 等核心进程被无辜 kill, 我们需要故意弄一个压力较大的模块, 比如利用 stress-ng 模块   
+2. stress-ng 模块起压力之后   
+
+        echo f > /proc/sysrq-trigger   
+

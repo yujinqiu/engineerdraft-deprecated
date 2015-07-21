@@ -97,3 +97,14 @@ agent 为例:
     supervisorctl reread
     supervisorctl update
 
+
+### 如果配置某个用户/分组用户使用 supervisortcrtl 来重启对应的服务  
+#### 背景  
+root is devil, 使用 root 来操作太危险, 很容易把系统搞趴下. 因此我们通常系统用普通用户来进行操作.     
+今天无意间发现可以使用如下的方式进行重启服务, 原理其实很简单就是改变 supervisor.sock 的方式 
+
+    [unix_http_server]
+    file=/tmp/supervisor.sock   ; (the path to the socket file)
+    chmod=0700                 ; socket file mode (default 0700)
+    chown=${USRE}:${USRE}       ; socket file uid:gid owner
+

@@ -171,4 +171,18 @@ host1 无法直接访问 host3, host1 可以访问 host2, host2 可以访问 hos
 最近在折腾[sshpiper](https://github.com/tg123/sshpiper) 的时候遇到了一个诡异的问题, 需要判断 sshpiper 连接到的是哪台机器上.  在第一次连接的时候 ssh 会显示连接机器的 fingerprint, 因此需要通过机器的 fingerprint 来确定对应的机器.   
 #### 获取方法 
 
-	ssh-keygen -l -f <privatekey>
+	ssh-keygen -l -f <privatekey>    
+	
+	
+### SSH 取消密码登陆   
+#### 背景   
+在运维的时候, 通常希望能够批量自动化执行命令, 可是经常会遇到有些机器需要使用密码登陆(忘记添加信任关系),  针对这些机器我们通常希望能够自动跳过.    
+#### 解决方案  
+    
+    -o 
+    
+     PasswordAuthentication yes  
+     
+#### 其它相关参数
+
+     StrictHostKeyChecking no   不进行 ssh key 验证ssh将不会自动把计算机的密匙加入"$HOME/.ssh/known_hosts"文件

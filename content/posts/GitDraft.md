@@ -271,4 +271,27 @@ git add file.psd
 git commit -m "Add design file"
 git push origin master
 ```
+
+
+## 使用 Git 进行协同开发  
+### 场景  
+前后端同事在一起开发联调,  通常情况下会存在一定的问题, 假设前端工程师(A)开发发现后端(B)返回的数据格式不对,  需要更新一下,   常见的解决方案是在后端工程师( B) 修复之后, 同步代码给前端工程师( A),  通常是以git/svn 进行同步 .   
+
+    B ---> Git/SVN Server --> A
+    
+这样导致的问题是,  在联调的过程中,  会有大量的联调代码.      
+比较优雅的方式是, 在 B 机器上启动一个 git 守护进程, (注意该方式: 用于非授权的 readonly 访问)
+
+    1. cd /path/to/project.git  
+    2. touch git-daemon-export-ok 
+    3. git daemon --reuseaddr --base-path=/opt/git/  /opt/git/   
+    
+    --base-path 允许克隆项目时不必给出完整路径。  最后面的路径告诉 Git 守护进程允许开放给用户访问的仓库目录。
+    
+对方只需要通过我们的 IP 就能同步下去(通信的端口是: 9418, 如果有防火墙需要注意一下)
+
+    git checkout git://your_ip/project 
+
+
+
     
