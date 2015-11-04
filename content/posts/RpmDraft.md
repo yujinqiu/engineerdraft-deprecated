@@ -119,4 +119,13 @@ pmbuild -ba SPECS/package.spec
 [How to patch and rebuild an RPM package](http://bradthemad.org/tech/notes/patching_rpms.php)
 
 
+## rpm repo 忽略 https安全校验
+```
+[local_repo]
+name=Local Repository
+baseurl=https://IP:PORT/centos/os/6/x86_64/
+sslverify=0
+enabled=1
+gpgcheck=0
+```
 
