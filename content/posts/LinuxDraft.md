@@ -279,5 +279,17 @@ stress-ng 主要功能:
 1. 由于 OOM 是按照一定的算法打分的, 因此为了避免 sshd 等核心进程被无辜 kill, 我们需要故意弄一个压力较大的模块, 比如利用 stress-ng 模块   
 2. stress-ng 模块起压力之后   
 
-        echo f > /proc/sysrq-trigger   
+        echo f > /proc/sysrq-trigger    
+        
+        
+### 命令行查看 unicode 具体内容
+#### 背景
+经常我们会得到`\u4e13\u8f66\u8fd0\u7ef4\u76d1\u63a7` 这样的 unicode 内容,  如何显示具体的内容?  
+已知的做法是使用 chrome 的`console.log('\u4e13\u8f66\u8fd0\u7ef4\u76d1\u63a7')`, 当时作为命令行爱好者, 还是希望能够通过命令行解决. 
+#### 解决方案 
+    在 ZSH 下面
+    echo -e '\u8fd0\u7ef4\u76d1\u63a7' 
+    运维监控
+        
+     
 
