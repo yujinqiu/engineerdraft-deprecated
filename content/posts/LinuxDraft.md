@@ -324,3 +324,46 @@ The same is also true for dig and nslookup - they're DNS specific too.
 
 因此`~root` 就是 root,  `~foo` 就是 `/home/foo`  
 [reference](http://www.thegeekstuff.com/2010/06/bash-tilde-expansion/)
+
+### systemd
+systemd是替代之前 init 的东西, 更复杂了些, 这里简单整理一下.  
+1. 列出当前运行的 unit
+
+```
+systemctl list-units //默认和 systemctl 一样的输出
+```
+2. 查看对应 service 的状态
+
+```
+systemctl status application.service   //.service 可以省略
+```
+
+3. application 启停,重启,reload
+
+```
+systemctl stop/start/restart/reload/disable/enable applicaiton.service
+```
+4.禁用一个服务
+mark a unit as completely unstartable, automatically or manually, by linking it to /dev/null
+
+```
+systemctl mask/unmask application.service
+```
+5.系统运行State(类比之前的 Run level)
+获取当前运行的 State  
+
+```
+systemctl get-default //通常是 multi-user.target
+```
+
+6. 设置默认 state
+
+```
+systemctl set-default  multi-user.target
+```
+7. 查看支持的 state
+
+```
+systemctl list-units --type=target
+```
+[reference](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
