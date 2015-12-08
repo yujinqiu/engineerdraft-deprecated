@@ -291,5 +291,36 @@ stress-ng 主要功能:
     echo -e '\u8fd0\u7ef4\u76d1\u63a7' 
     运维监控
         
-     
 
+### 查看发现版本
+#### 背景
+国内很多公司会定制自己的内容, 在运维的过程中, 经常需要安装一些开源的软件, 那么就涉及到版本的问题,   
+怎么知道修改之前的版本 ?   
+1. /etc/issue  
+2. /etc/redhat-release  
+3. lsb-release  
+
+
+### 为什么 Linux 修改 /etc/hosts之后, host hostname, 不是新 IP ? 
+#### 背景  
+今天有一个同事问题我为什么他修改`/etc/hosts` 文件之后, 问我为什么 host 域名还是之前的 ip ?  没有想到居然被绕进去了, search 了一会才彻底明白是什么事情.  
+开始的时候, 一直以为是`/etc/nsswitch.conf` 里边的`hosts : files, dns` 顺序有问题, 查看之后其实不然.  
+
+```
+host doesn't look at /etc/nsswitch.conf. That is by design, not by accident, since host is specifically a DNS lookup program. /etc/hosts is not DNS, it's (mostly) what we used before we had DNS.
+
+The same is also true for dig and nslookup - they're DNS specific too.
+```  
+使用`strace` 去查看也是相同的道理.
+可以使用 `getent hosts DOMAIN` 来进行
+
+### Linux tilde 特殊解释
+今天在看 web 上的一个文档的时候, 发现居然可以` cd ~root`, 当时就惊呆了, 居然可以这样写.  
+查了一下, 原来:  
+
+```
+~USER Expand to the home directory of the given username
+```
+
+因此`~root` 就是 root,  `~foo` 就是 `/home/foo`  
+[reference](http://www.thegeekstuff.com/2010/06/bash-tilde-expansion/)
