@@ -1,0 +1,281 @@
+{
+    "description": "DO NOT modify this file. If you want custom settings, modify the marboo_config.json, writting like this",
+    "description_cn": "不要修改这个文件。自定义的话，修改 marboo_config.json 文件，格式参考本文。",
+    "new_file_types": [{
+        "display_name": "MarkDown",
+        "file_extension": "md"
+    },{
+        "display_name": "reStructured Text",
+        "file_extension": "rst"
+    },{
+        "display_name": "Org-mode",
+        "file_extension": "org"
+    },{
+        "display_name": "Text",
+        "file_extension": "txt"
+    },{
+        "display_name": "Custom",
+        "file_extension": ""
+    }],
+
+    "max_file_process_number_in_one_second": 1,
+    "show_media_dir": false,
+    "show_recent_files_dir": true,
+    "folder_viewer": "Finder",
+    "folder_terminal_viewer": "Terminal",
+    "file_editor": "Default",
+    "web_browser": "Default",
+    "init_content_for_commandline": false,
+    "ignored_dirs": ["Pods"],
+    "generate_html_with_file_extension": false,
+    "rules": [{
+        "file_category": "text",
+        "pips": [{
+            "name": "highlight"
+        },{
+            "name": "selfRender"
+        },{
+            "name": "generateFileListFromContent"
+        },{
+            "name": "getContentFromURL"
+        },{
+            "name": "json2csv"
+        },{
+            "name": "origin",
+            "output_file_extension": "*"
+        },{
+            "name": "marbooTemplate",
+            "template_path": "views/marboo.html"
+        },{
+            "name": "markdownTemplate",
+            "template_path": "views/md.html"
+        },{
+            "name": "orgTemplate",
+            "template_path": "views/org.html"
+        },{
+            "name": "textileTemplate",
+            "template_path": "views/textile.html"
+        },{
+            "name": "highlightTemplate",
+            "template_path": "views/highlight.html"
+        },{
+            "name": "shiftRight",
+            "output_file_extension": "code"
+        },{
+            "name": "k2k",
+            "output_file_extension": "txt"
+        },{
+            "name": "vextabTemplate",
+            "template_path": "views/vextab.txt.html"
+	},{
+            "name": "csv2html"
+        }],
+        "piplines": [{
+            "init": "starts/default",
+            "pipline": ["highlight", "highlightTemplate"]
+	},{
+	    "filename": "marboo_config.json",
+	    "init": "starts/marboo_config.json"
+	},{
+	    "filename": "Podfile",
+	    "init": "starts/Podfile",
+	},{
+	    "filename": "Makefile",
+	    "init": "starts/Makefile",
+	},{
+	    "filename": "Rakefile",
+	    "init": "starts/Rakefile",
+	},{
+	    "filename": "Jakefile",
+	    "init": "starts/Jakefile",
+        },{
+            "filename": "*.vextab.txt",
+            "pipline": ["vextabTemplate"]
+        },{
+            "filename": "*.sh",
+            "init": "starts/default.sh"
+        },{
+            "filename": "*.py",
+            "init": "starts/default.py"
+        },{
+            "filename": "*.go",
+            "init": "starts/default.go"
+        },{
+            "filename": "*.swift",
+            "init": "starts/default.swift"
+	},{
+	    "filename": "*.js",
+	    "init": "starts/default.js"
+	},{
+	    "filename": "*.json",
+	    "init": "starts/default.json"
+	},{
+	    "filename": "*.app.json",
+	    "init": "starts/app.json",
+            "pipline": ["selfRender", "highlight", "highlightTemplate"]
+        },{
+	    "filename": "*.datasource.json",
+	    "init": "starts/datasource.json",
+            "pipline": ["generateFileListFromContent", "highlight", "highlightTemplate"]
+        },{
+            "filename": "*.request.json",
+            "pipline": ["getContentFromURL", "highlight", "highlightTemplate"]
+	},{
+	    "filename": "*.csv",
+	    "pipline": ["csv2html", "marbooTemplate"]
+        }]
+    },{
+        "file_category": "image",
+        "pips": [{
+            "name": "displayImage"
+	}],
+        "piplines": [{
+            "pipline": ["displayImage", "marbooTemplate"]
+	}]
+    },{
+        "file_category": "audio",
+        "pips": [{
+            "name": "displayAudio",
+            "path": "converts/audio2html.sh"
+        }],
+        "piplines": [{
+            "pipline": ["displayAudio", "marbooTemplate"]
+        }]
+    },{
+        "file_category": "video",
+        "pips": [{
+            "name": "displayVideo",
+            "path": "converts/video2html.sh"
+	},{
+	    "name": "displayFlash",
+	    "path": "converts/flash2html.sh"
+        }],
+        "piplines": [{
+            "pipline": ["displayVideo", "marbooTemplate"]
+	},{
+	    "filename": "*.swf",
+	    "pipline": ["displayFlash", "marbooTemplate"]
+	}]
+    },{
+        "file_category": "application",
+        "pips": [{
+            "name": ""
+        }],
+        "piplines": [{
+            "pipline": ["showAlert", "alertTemplate"]
+        }]
+    },{
+	"file_type": "Html",
+        "piplines": [{
+            "init": "starts/default.html",
+            "pipline": ["origin"]
+        }]
+    },{
+        "file_type": "Markdown",
+        "pips": [{
+            "name": "md2html"
+        },{
+            "name": "remarkTemplate",
+            "template_path": "views/remark.md.html"
+        },{
+            "name": "mathJaxTemplate",
+            "template_path": "views/tex.md.html"
+        }],
+        "piplines": [{
+            "init": "starts/default.md",
+            "pipline": ["md2html", "markdownTemplate"]
+        },{
+            "filename": "*.remark.md",
+            "init": "starts/default.remark.md",
+            "pipline": ["remarkTemplate"]
+        },{
+            "filename": "*.tex.md",
+            "init": "starts/default.md",
+            "pipline": ["md2html", "mathJaxTemplate"]
+        },{
+            "filename": "*.apib",
+            "init": "starts/default.apib",
+            "pipline": ["md2html", "markdownTemplate"]
+        }]
+    },{
+        "file_type": "reStructuredText",
+        "pips": [{
+            "name": "rst2html"
+        }],
+        "piplines": [{
+            "init": "starts/default.rst",
+            "pipline": ["rst2html", "marbooTemplate"]
+        }]
+    },{
+        "file_type": "Orgmode",
+        "piplines": [{
+            "init": "starts/default.org",
+            "pipline": ["orgTemplate"]
+        },{
+            "file_name": "*.reveal.org",
+            "init": "starts/default.reveal.org",
+            "pipline": ["orgTemplate"]
+        },{
+            "file_name": "*.org_archive",
+            "pipline": ["orgTemplate"]
+        },{
+            "file_name": "*.reveal.org_archive",
+            "pipline": ["orgTemplate"]
+        }]
+    },{
+        "file_type": "Textile",
+        "pips": [{
+            "name": "textile2html"
+        }],
+        "piplines": [{
+            "init": "starts/default.textile",
+            "pipline": ["textile2html", "marbooTemplate"]
+        }]
+    },{
+        "file_type": "Txt2tags",
+        "pips": [{
+            "name": "txt2tags"
+        }],
+        "piplines": [{
+            "init": "starts/default.t2t",
+            "pipline": ["txt2tags", "marbooTemplate"]
+        }]
+    },{
+        "file_type": "Archived File",
+        "pips": [{
+            "name": "zipList",
+            "path": "converts/zip-list.sh",
+            "output_file_extension": "md"
+        },{
+            "name": "tarList",
+            "path": "converts/tar-list.sh",
+            "output_file_extension": "md"
+        }],
+        "piplines": [{
+            "filename": "*.zip",
+            "pipline": ["zipList", "md2html", "markdownTemplate"]
+        },{
+            "filename": "*.tar",
+            "pipline": ["tarList", "md2html", "markdownTemplate"]
+        },{
+            "filename": "*.tar.bz",
+            "pipline": ["tarList", "md2html", "markdownTemplate"]
+        },{
+            "filename": "*.tar.gz",
+            "pipline": ["tarList", "md2html", "markdownTemplate"]
+        }]
+    },{
+        "file_type": "System UI",
+        "pips": [{
+            "name": "showAlert",
+            "path": "converts/alert.sh"
+        },{
+            "name": "alertTemplate",
+            "template_path": "views/alert.html"
+        }],
+        "piplines": [{
+            "filename": "*.alert.*",
+            "pipline": ["showAlert", "alertTemplate"]
+        }]
+    }]
+}

@@ -1,0 +1,29 @@
+<!-- This file is the homepage of the website. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      This section just sets up some metadata for the website.
+
+      It probably does not need to be changed.
+    -->
+    <meta charset="utf-8">
+    <base href="{{ .Site.BaseUrl }}">
+    <title>{{ .Site.Title }}</title>
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+
+    {{ template "chrome/head_includes.html" . }}
+</head>
+  <body class="theme-base-0b" lang="en">
+
+  {{ template "chrome/sidebar.html" . }}
+
+    <div class="wrap">
+      <h1> Ahhh FFS its a for oh for
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+{{ template "chrome/footer.html" }}

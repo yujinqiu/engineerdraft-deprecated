@@ -1,0 +1,10 @@
+---
+contentdir: "content"
+layoutdir: "layouts"
+publishdir: "yujinqiu.github.io"
+indexes:
+  category: "categories"
+baseurl: "http://yujinqiu.github.io/"
+title: "Engineer's Draft"
+pygmentsstyle: "native"
+...
