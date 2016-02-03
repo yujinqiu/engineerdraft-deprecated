@@ -75,6 +75,21 @@
 
     export http_proxy=http://your.proxy.server:port/
     如果是 HTTPS 需要配置 HTTPS_PROXY, 注意是大写哦. 
+
+#### 自动化方案
+上面只是简单介绍 curl 代理的原理, 但是如果每次都需要 export 的话, 会比较麻烦, 因此我在 ZSH 下面实现了一个简单的` proxyme` 的 function.  
+
+```
+#
+# Proxy for command use curl
+#
+function proxyme() {
+        ALL_PROXY=socks5://127.0.0.1:10087 $@
+
+}
+
+```
+在 ZSH reload! 之后, 就是直接  `proxyme brew install  foobar`
     
 
 ## 如何删除乱码文件/目录  
