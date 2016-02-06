@@ -62,6 +62,32 @@ ssh -D 的本质上是一个 sock5 的代理, 不是 http/https 代理, 所以�
 	* Connection #0 to host www.facebook.com left intact
 
 	使用 HTTPS 访问, 正常
+
+## 使用 Privoxy 将 socks 代理转化为http 代理
+### 背景
+有些软件本身不支持 socks 代理, 比如 Aria2, 只支持 http 代理, 因此我们希望能够有一种方式能够将
+http 流量转化为 shadow socks.   
+
+### 解决方案
+使用 Privoxy 可以支持我们的要求.  
+
+1. 安装
+    `brew install privoxy`
+
+2. 增加配置
+
+```
+listen-address  localhost:8118
+forward-socks5 / 127.0.0.1:1080 .
+```
+
+
+3. 启动 Privoxy
+
+privoxy  path2conf
+
+privoxy 还支持 "屏蔽网站, 去广告功能" , http://www.privoxy.org/user-manual/index.html
+
 	
 
 
