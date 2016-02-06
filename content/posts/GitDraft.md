@@ -291,6 +291,21 @@ git push origin master
 对方只需要通过我们的 IP 就能同步下去(通信的端口是: 9418, 如果有防火墙需要注意一下)
 
     git checkout git://your_ip/project 
+    
+    
+## git commit 的时候提示
+```
+YouCompleteMe unavailable: requires Vim 7.3.598+
+UltiSnips requires Vim >= 7.4
+Press ENTER or type command to continue
+Merge made by the 'recursive' strategy.
+```
+
+原因是: zsh 里边配置死了 vim, 调整为最新版本的 vim 即可.  
+```
+[core]
+	editor = /usr/local/bin/vim
+```
 
 
 
