@@ -31,6 +31,15 @@ daemon(rpc server) 模式, 网上很多资料都是介绍这种模式.主要的�
 2: chrome 安装 "BaiduExporter" 插件
 3: 在导出下载页面
 
+## 使用 yaaw 进行下载
+1. 本地启动 aria2 `aria2`
+2. 访问[ yaaw ](http://binux.github.io/yaaw/demo/#)
+3. setting 设置 `http://token:token@127.0.0.1:6800/jsonrpc`
+
+## 高级功能
+1. 支持 Event Hook (download-complete, download-pause, ...)
+2. 支持 json 编程接口, 可以方便程序员更高级的自动化. 
+
 ## 配置相关
 aria2c 默认启动会自动读取 `$HOME/.aria2/aria2.conf` 文件
 

@@ -382,3 +382,53 @@ systemctl set-default  multi-user.target
 systemctl list-units --type=target
 ```
 [reference](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+
+
+## Linux 限定单个目录大小的方法
+### 背景
+在日常运维中, 经常会遇到 RD 同学把目录写满的 case, 如何限制单个目录的大小?  
+
+### 思路
+1: 设定一个上限大小的文件 
+2: 格式化为一个设备
+3: 挂载这个设备
+
+### 操作
+
+Linux下由于某些用途需要限制个别文件夹大小，可以使用镜像文件挂载的形式来实现，首先创建一个指定大小的磁盘镜像文件。
+
+dd if=/dev/zero of=/root/disk.img bs=2M count=1024
+
+这样就创建了一个大小为2GB的磁盘镜像。
+
+挂载为设备
+
+losetup /dev/loop0 /root/disk.img
+
+如果loop0不可用可挂载到loop1/loop2/loop3等等。
+
+格式化设备
+
+mkfs.ext3 /dev/loop0
+
+挂载为文件夹
+
+mount -t ext3 /dev/loop0 /mnt/disk1
+
+这样/mnt/disk1这个文件夹只能使用2GB的空间。
+
+卸载方法：
+
+先卸载文件夹
+
+umount /mnt/disk1
+
+卸载设备
+
+losetup -d /dev/loop0
+
+如果不再使用可以直接删除镜像文件
+
+rm -f /root/disk.img
+
+
