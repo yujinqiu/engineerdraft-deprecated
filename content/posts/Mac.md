@@ -100,3 +100,13 @@ ctrl + 鼠标放大,缩小
 经常我们在命令行里边,看到某个文件之后, 希望能够 quick look, 一般的做法是, open File 打开, 然后关闭, 其实我们只是希望能够简单看一下, 可以利用以下命令来实现 :
 
 	qlmanage -p  File
+
+## 如何将 iPhone 屏幕内容偷到 Mac 上
+### 背景
+自己做了一个 app, 需要给其它同学做 presentation.  
+需要利用的摄像头, 作为 mac 可移动的摄像头来查看具体的内容, 比如查看窗户外的样子.  
+
+## How
+1: Mac 开始网络共享,  iPhone 连接上去.  
+2: 在 Mac 上打开 QuickTime Player, 在 Menu bar 里边选择 File -> **New Movie Recording**, 注意是** Movie** 哦. 
+3: 在向下的箭头里边找到 iPhone 即可.
